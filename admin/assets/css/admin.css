@@ -1105,6 +1105,13 @@ ul {
   margin-bottom: 5px;
   font-weight: 700;
   cursor: pointer;
+} 
+#contentDetailProposal .modal-dialog .box-item-detail-proposal .right-item-proposal .cnt-vote > .disable {
+  padding-left: 0px;
+}
+#contentDetailProposal .modal-dialog .box-item-detail-proposal .right-item-proposal .cnt-vote > .disable::after {
+  display: none;
+  padding-left: 0px;
 }
 #contentDetailProposal .modal-dialog .box-item-detail-proposal .right-item-proposal .cnt-vote > div::after {
   position: absolute;

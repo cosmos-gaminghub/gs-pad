@@ -7,7 +7,7 @@
             </ul>
             <div class="content-logout">
                 <ul>
-                    <li><a href="javascript:void (0)" @click="logout" v-if="address"> <span>ログアウト</span></a></li>
+                    <li><a href="javascript:void (0)" @click="logout" v-if="address"> <span>Disconnect</span></a></li>
                 </ul>
             </div>
         </div>

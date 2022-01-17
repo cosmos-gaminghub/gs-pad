@@ -21,11 +21,11 @@
 
 <script>
 import {KelprWallet} from "@/utils/connectKeplr";
-import { mapState, mapMutations } from "vuex";
+import {mapState, mapMutations} from "vuex";
 
 export default {
     name: "Login",
-    computed: { ...mapState("auth", ["address"]) },
+    computed: {...mapState("auth", ["address"])},
     mounted() {
         this.getData()
     },
@@ -44,19 +44,18 @@ export default {
         },
         getAddress() {
             return localStorage.getItem("address")
-        }, 
+        },
         doCopy: function () {
-            this.$copyText(this.address).then(function (e) {
-                alert('Copied')
-                console.log(e)
-            }, function (e) {
-                alert('Can not copy')
-                console.log(e)
+            this.$copyText(this.address).then(() => {
+                this.$toast.success('Copied')
+
+            }, () => {
+                this.$toast.error('Can not copy')
             })
         },
         getData() {
             const address = localStorage.getItem("address")
-            if(address) {
+            if (address) {
                 this.setAddress(address)
             }
         }

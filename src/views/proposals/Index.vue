@@ -147,7 +147,9 @@
                                         :votingStartTime="proposalDetail.votingStartTime"
                                         :votingEndTime="proposalDetail.votingEndTime"
                                     />
-                                    <p>{{ proposalDetail.des.content }}</p>
+                                    <div class="decription-proposal">
+                                        <p >{{ proposalDetail.des.content }}</p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="right-item-proposal">
@@ -291,7 +293,6 @@ export default {
                 if (item.proposalId.low === val) {
                     this.proposalDetail = item
                     if (item.status === ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD) {
-                        console.log(item.status)
                         this.check = true
                     }
                     return
@@ -327,7 +328,6 @@ export default {
             loader.hide()
         },
         showVote() {
-            console.log(this.status, 'dd')
             if (this.status === ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD) {
                 this.check = true
             } else {
@@ -338,3 +338,18 @@ export default {
     }
 }
 </script>
+<style>
+.decription-proposal{
+    max-height: 60vh;
+    overflow-y: auto;
+}
+.decription-proposal p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    width: 100%;
+    font-family: "Blinker",sans-serif;
+    line-height: 130%;
+    height: unset;
+}
+</style>

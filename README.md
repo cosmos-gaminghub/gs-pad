@@ -1,4 +1,4 @@
-# CCN wallet browser
+# Wallet browser
 
 ## Project setup
 ```

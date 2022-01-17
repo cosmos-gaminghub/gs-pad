@@ -19,8 +19,12 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" :style="formInvalid" placeholder="Enter tokens to Stake"
-                           v-model="token" @keyup="checkRequest"/>
+                    <div class="input-number">
+                        <input class="form-control" type="number" :style="formInvalid"
+                               placeholder="Enter tokens to Stake"
+                               v-model="token" @keyup="checkRequest"/>
+
+                    </div>
                     <span class="error">{{ error }}</span>
                     <div class="text-max" @click="maxAvailable">Max</div>
                 </div>
@@ -30,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-vote" @click="sendRequest"
-                            ::disabled="clickSubmit">STAKE
+                            :disabled=clickSubmit>STAKE
                     </button>
                 </div>
             </div>
@@ -65,7 +69,14 @@ export default {
         validators: Array,
         coin: String
     },
-
+    computed: {
+        clickSubmit() {
+            if (this.error || this.title === 'Select validator' || this.token === '') {
+                return 'disabled'
+            }
+            return ''
+        }
+    },
     methods: {
         clickDropdown() {
             if (this.dropdown === true) {
@@ -104,16 +115,19 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
-        clickSubmit() {
-            if (this.error || this.title == 'Select validator' || this.token == '') {
-                return ''
-            }
-            return 'disabled'
-        }
+
     }
 }
 </script>
 
 <style scoped>
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 
 </style>

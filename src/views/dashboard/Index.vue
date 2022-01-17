@@ -24,7 +24,7 @@
                         <div class="status-items">
                             <div class="title">Rewards</div>
                             <div class="number">{{ reward.toFixed(1) }}</div>
-                            <div class="list-link"><a class="disable" href="javascript:void(0)" @click="claim">CLAIM</a>
+                            <div class="list-link"><a  href="javascript:void(0)" @click="claim" >CLAIM</a>
                             </div>
                         </div>
                         <div class="status-items">
@@ -64,6 +64,7 @@
                                                 <ValidatorTable
                                                     :validators="allValidators.validators"
                                                     :isStake="false"
+                                                    :unbondings="unbondings"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -78,6 +79,7 @@
                                                 <ValidatorTable
                                                     :validators="stakedValidators.validators"
                                                     :isStake="true"
+                                                    :unbondings="unbondings"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -112,7 +114,9 @@
                                                    :des="proposal.des"
                                                    @showModal="showModal('','modalProposal',proposal.proposalId.low,index+1)"
                                     />
+                                    <ProposalNoData :proposals="proposals"/>
                                 </ul>
+
                             </div>
                         </div>
                     </div>
@@ -245,11 +249,13 @@ import ProposalInfo from "@/components/proposal/ProposalInfo";
 import ProposalChart from "@/components/proposal/ProposalChart";
 import ProposalVoteInfo from "@/components/proposal/ProposalVoteInfo";
 import ProposalHeader from "@/components/proposal/ProposalHeader";
+import ProposalNoData from "../../components/proposal/ProposalNoData";
 
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 export default {
     name: "Dashboard",
     components: {
+        ProposalNoData,
         ProposalHeader,
         ProposalVoteInfo,
         ProposalChart,
@@ -265,6 +271,7 @@ export default {
     data: function () {
         return {
             allValidators: [],
+            unbondings: [],
             activeTab: "allValidators",
             stakedValidators: [],
             wallet: '',
@@ -283,7 +290,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('auth', ["address"])
+        ...mapState('auth', ["address"]),
     },
     async mounted() {
         await this.getWallet()
@@ -315,7 +322,7 @@ export default {
             return ''
         },
         showModal(title, refName, proposalId, index) {
-            if (this.address == '' && proposalId === '') {
+            if (this.address == '' && proposalId == '') {
                 this.$toast.error('Account not connected. Please connect to wallet')
                 return
             }
@@ -330,6 +337,7 @@ export default {
                         return
                     }
                 })
+
             }
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")
@@ -387,7 +395,6 @@ export default {
                 data.proposer = await this.getProposal(stargateClient, data.proposalId)
             }
             this.proposals = [...proposals]
-            console.log(this.proposals)
         },
         async getRewards() {
             if (this.address) {
@@ -413,7 +420,8 @@ export default {
         },
         async unbonding() {
             if (this.address) {
-                await this.wallet.getUnbonding(this.address)
+                const response = await this.wallet.getUnbonding(this.address)
+                this.unbondings = response.unbondingResponses
             }
         },
         async getDelegation() {
@@ -433,15 +441,20 @@ export default {
             }
         },
         async claim() {
-            try {
-                const kelprWallet = await KelprWallet.getKeplrWallet()
-                const address = await KelprWallet.getAddress()
-                for await (const data of this.listReward) {
-                    await kelprWallet.claimRewards(address, data.validatorAddress)
+            if (this.listReward.rewards>0){
+                try {
+                    const kelprWallet = await KelprWallet.getKeplrWallet()
+                    const address = await KelprWallet.getAddress()
+
+                    for await (const data of this.listReward.rewards) {
+                        await kelprWallet.claimRewards(address, data.validatorAddress)
+                    }
+                } catch (err) {
+                    this.$toast.error(err.message);
                 }
-            } catch (err) {
-                this.$toast.error(err.message);
             }
+            return
+
         },
         showLoadling(refName) {
             const loader = this.$loading.show({

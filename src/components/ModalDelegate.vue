@@ -1,7 +1,7 @@
 <template>
     <div class="modal-body">
         <div class="content-stake">
-            <div class="title-popup-stake">Stake Tokens</div>
+            <div class="title-popup-stake">Delegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
                     <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
@@ -19,7 +19,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" :style="formInvalid" placeholder="Enter tokens to Stake" v-model="token" @keyup="checkRequest"/>
+                    <input class="form-control" type="number" :style="formInvalid" placeholder="Enter tokens to Stake"
+                           v-model="token" @keyup="checkRequest"/>
                     <span class="error">{{ error }}</span>
                     <div class="text-max" @click="maxAvailable">Max</div>
                 </div>
@@ -28,7 +29,7 @@
                         class="number">{{ Number(coin) / 10 ** 6 }}</span></div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-vote" @click="sendRequest"  ::disabled="clickSubmit">STAKE</button>
+                    <button class="btn btn-vote" @click="sendRequest" :disabled=clickSubmit>STAKE</button>
                 </div>
             </div>
         </div>
@@ -61,7 +62,14 @@ export default {
         coin: String,
         titleDelegate: String
     },
-
+    computed: {
+        clickSubmit() {
+            if (this.error || this.title == 'Select validator' || this.token == '') {
+                return 'disabled'
+            }
+            return ''
+        }
+    },
     methods: {
         clickDropdown() {
             if (this.dropdown === true) {
@@ -83,6 +91,7 @@ export default {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
                 await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.amount)
+                this.$toast.success('Stake success');
             } catch (err) {
                 this.$toast.error(err.message);
             }
@@ -99,17 +108,19 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
-        clickSubmit() {
-            if (this.error || this.title == 'Select validator' || this.token == '') {
-                return ''
-            }
-            return 'disabled'
-        }
+
     }
 }
 </script>
 
 
 <style scoped>
+input[type='number'] {
+    -moz-appearance: textfield;
+}
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 </style>

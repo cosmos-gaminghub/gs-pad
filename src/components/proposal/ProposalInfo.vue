@@ -30,8 +30,9 @@ export default {
     },
     filters: {
         formatDateTime(dateTime) {
-            const a = moment(dateTime, "YYYY.MM.DD HH:mm").toString()
+            const a = moment(dateTime, "YYYY.MM.DD HH:mm").format("YYYY-MM-DD HH:mm:ss").toString()
             return a.split(' ').slice(0, 5).join(' ');
+
         },
     }
 }

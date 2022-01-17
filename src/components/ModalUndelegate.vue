@@ -1,7 +1,7 @@
 <template>
     <div class="modal-body">
         <div class="content-stake">
-            <div class="title-popup-stake">Undelegate</div>
+            <div class="title-popup-stake">Undelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
                     <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#"
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" :style="formInvalid" type="text" v-model="token"
+                    <input class="form-control" :style="formInvalid" type="number" v-model="token"
                            placeholder="Enter tokens to Stake" @keyup="checkRequest"/>
                     <span class="error">{{ error }}</span>
                     <div class="text-max" @click="maxToken()"><a href="#" style="color: #00B6ED">Max</a></div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-vote" @click="sendRequest" ::disabled="clickSubmit">STAKE</button>
+                    <button class="btn btn-vote" @click="sendRequest" :disabled=clickSubmit>UNDELEGATE</button>
                 </div>
             </div>
         </div>
@@ -64,6 +64,14 @@ export default {
     props: {
         stakedValidators: Array,
         delegate: Array
+    },
+    computed: {
+        clickSubmit() {
+            if (this.error || this.title == 'Select validator' || this.token == '') {
+                return 'disabled'
+            }
+            return ''
+        }
     },
     methods: {
         clickDropdown() {
@@ -108,16 +116,18 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
-        clickSubmit() {
-            if (this.error || this.title == 'Select validator' || this.token == '') {
-                return ''
-            }
-            return 'disabled'
-        }
+
     }
 }
 </script>
 
 <style scoped>
+input[type='number'] {
+    -moz-appearance: textfield;
+}
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
 </style>
