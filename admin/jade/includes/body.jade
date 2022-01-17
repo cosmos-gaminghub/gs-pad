@@ -1,0 +1,14 @@
+mixin body
+  body(class!=attributes.class)
+    block body-contents
+
+    = "\n"
+    // Vendor jQuery (CORE PLUGINS - METRONIC)
+    script(type='text/javascript', src='assets/js/jquery.min.js')
+    script(type='text/javascript', src='assets/js/bootstrap.min.js') 
+    ="\n"
+    // Theme Script
+    script(type="text/javascript", src="https://kit.fontawesome.com/8b9922aecc.js")
+    script(type="text/javascript", src="assets/js/admin.js")
+    script(type="text/javascript", src="assets/js/customer.js")
+

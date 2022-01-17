@@ -1,0 +1,288 @@
+extends ../layouts/master.jade
+
+append titlePage
+  title Cosmos Explore
+
+append body
+  +body(class="page-header-fixed page-quick-sidebar-over-content page-account page-account-vp")
+
+append body-contents
+  ="\n"
+  .page-container
+    include ../includes/page-sidebar.jade
+    ="\n"
+    .page-content-wrapper
+      .page-content.home-page
+        .container
+          .content-wallet
+            .row
+              .col-md-12
+                .cnt-acount-user
+                  .name-acount
+                    .name USERNAME
+                    .cnt-link-copy
+                      .link juno1n…xyqq087
+                      button.btn.btn-copy Copy
+                  .icon
+            .content-validate-detail
+              .row
+                .col-md-12
+                  .cnt-wallet-left
+                    .cnt-validator
+                      .title-vali
+                        .title.title-tab
+                          ul 
+                            li
+                              a.active(href="#allvali") All Validators
+                            li
+                              a(href="#staked") Staked Validators
+                        .link-see-all See all >
+                      .content-tab-vali
+                        .content-tab#allvali
+                          .content-detail
+                            .cos-table-list
+                              .table-responsive
+                                table.table.table-striped.table-bordered.table-hover.text-center
+                                  thead
+                                    tr
+                                      th Validator
+                                      th Status
+                                      th Voting Power
+                                      th Commission
+                                      th Tokens Staked
+                                      th Action
+                                  tbody
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    
+                        .content-tab#staked
+                          .content-detail
+                            .cos-table-list
+                              .table-responsive
+                                table.table.table-striped.table-bordered.table-hover.text-center
+                                  thead
+                                    tr
+                                      th Validator
+                                      th Status
+                                      th Voting Power
+                                      th Commission
+                                      th Tokens Staked
+                                      th Action
+                                  tbody
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+                                    tr
+                                      td
+                                        .td-acount
+                                          .icon
+                                          span Bro_n_Bro
+                                      td
+                                        span.status
+                                          |Active
+                                      td
+                                        |78,233.10
+                                      td 5%
+                                      td N/A
+                                      td 
+                                        a(href="#") DELEGATE
+               
+          // .member-main
+    // .page-content
+  // .member
+  //.page-container
+
+  ="\n"
+  // include ../includes/footer.jade
+

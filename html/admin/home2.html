@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cosmos Explore</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Vendor CSS (GLOBAL MANDATORY STYLES)-->
+    <link rel="stylesheet" type="text/css" href="admin/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="admin/assets/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,600;0,700;1,500;1,600&amp;display=swap" rel="stylesheet">
+
+
+    <!-- Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="admin/assets/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="admin/assets/css/admin.css">
+
+  </head>
+
+  <body class="page-header-fixed page-quick-sidebar-over-content page-account page-account-vp">
+
+    <div class="page-container">
+      <div class="page-sidebar-wrapper vetical-menu">
+        <div class="page-sidebar navbar-collapse collapse">
+          <div class="cnt-hec-logo"><a href="#">
+              <div class="icon"> <img src="admin/assets/images/logo.png" alt="index"/></div></a></div>
+          <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
+            <li class="menu-active"><a href="home.html">
+                <div class="icon"><img class="default" src="admin/assets/images/icon/dash.svg" alt="index"/><img class="active" src="admin/assets/images/icon/dash_ac.svg" alt="index"/></div><span class="title">DASHBOARD</span></a></li>
+
+            <li><a href="mypage.html">
+                <div class="icon"><img class="default" src="admin/assets/images/icon/data.svg" alt="index"/><img class="active" src="admin/assets/images/icon/data_ac.svg" alt="index"/></div><span class="title">STAKE</span></a></li>
+
+            <li><a href="tree.html">
+                <div class="icon"><img class="default" src="admin/assets/images/icon/pro.svg" alt="index"/><img class="active" src="admin/assets/images/icon/pro_ac.svg" alt="index"/></div><span class="title">PROPOSALS</span></a></li>
+
+          </ul>
+          <div class="content-logout">
+            <ul>
+              <li> <a href="#"> <span>ログアウト</span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- .page-sidebar-wrapper-->
+
+      <div class="page-content-wrapper">
+        <div class="page-content home-page">
+          <div class="container">
+            <div class="content-wallet">
+              <div class="row">
+                <div class="col-md-5 float-right">
+                  <div class="cnt-btn-wallet"><a href="#">CONNECT WALLET</a></div>
+                </div>
+                <div class="col-md-7 float-left">
+                  <div class="content-wall-left">
+                    <div class="blocks-status">
+                      <div class="status-items">
+                        <div class="title">Height</div>
+                        <div class="number">112</div>
+                        <div class="list-link"> <a href="#">Stake</a></div>
+                      </div>
+                      <div class="status-items">
+                        <div class="title">Height</div>
+                        <div class="number">23</div>
+                        <div class="list-link"> <a class="active" href="#">UNDELEGATE</a><a href="#">REDELEGATE</a></div>
+                      </div>
+                      <div class="status-items">
+                        <div class="title">Height</div>
+                        <div class="number">0</div>
+                        <div class="list-link"> <a class="disable" href="#">CLAIM</a></div>
+                      </div>
+                      <div class="status-items">
+                        <div class="title">Height</div>
+                        <div class="number">0</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="content-validate-detail">
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="cnt-wallet-left">
+                      <div class="cnt-validator">
+                        <div class="title-vali">
+                          <div class="title title-tab">
+                            <ul>
+                              <li><a class="active" href="#allvali">All Validators</a></li>
+                              <li><a href="#staked">Staked Validators</a></li>
+                            </ul>
+                          </div>
+                          <div class="link-see-all">See all ></div>
+                        </div>
+                        <div class="content-tab-vali">
+                          <div class="content-tab" id="allvali">
+                            <div class="content-detail">
+                              <div class="cos-table-list">
+                                <div class="table-responsive">
+                                  <table class="table table-striped table-bordered table-hover text-center">
+                                    <thead>
+                                      <tr>
+                                        <th>Validator</th>
+                                        <th>Status</th>
+                                        <th>Voting Power</th>
+                                        <th>Commission</th>
+                                        <th>Tokens Staked</th>
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="content-tab" id="staked">
+                            <div class="content-detail">
+                              <div class="cos-table-list">
+                                <div class="table-responsive">
+                                  <table class="table table-striped table-bordered table-hover text-center">
+                                    <thead>
+                                      <tr>
+                                        <th>Validator</th>
+                                        <th>Status</th>
+                                        <th>Voting Power</th>
+                                        <th>Commission</th>
+                                        <th>Tokens Staked</th>
+                                        <th>Action</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="td-acount">
+                                            <div class="icon"></div><span>Bro_n_Bro</span>
+                                          </div>
+                                        </td>
+                                        <td><span class="status">Active</span></td>
+                                        <td>78,233.10</td>
+                                        <td>5%</td>
+                                        <td>N/A</td>
+                                        <td> <a href="#">DELEGATE</a></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="cnt-wallet-right">
+                      <div class="cnt-validator">
+                        <div class="title-vali">
+                          <div class="title top-ac">Top Active Proposals</div>
+                          <div class="link-see-all">See all ></div>
+                        </div>
+                        <div class="content-detail-vali">
+                          <ul>
+                            <li>
+                              <div class="item-vali-detail">
+                                <div class="title-item-vali">
+                                  <div class="number">1</div>
+                                  <div class="cnt-text"><a href="#">Status</a><a class="active" href="#">Voting Perlod</a></div>
+                                </div>
+                                <div class="box-item-detail">
+                                  <h3>Fixing Centralization From Gamed Stakedrop</h3>
+                                  <div class="sub-title-item">This is the account that gamed the fair stakedrop. </div>
+                                  <ul class="info-item">
+                                    <li> <span class="title">Proposer:</span><span class="info"> juno1r…jhwwccx</span></li>
+                                    <li> <span class="title">Submitted on:</span><span class="info"> 07-Oct-2021 19:55:41</span></li>
+                                    <li> <span class="title">Voting Period:</span><span class="info"> 12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58</span></li>
+                                  </ul>
+                                </div>
+                                <div class="bottom-item-vali">
+                                  <div class="cnt-vote">
+                                    <button class="btn btn-vote">Vote</button>
+                                  </div>
+                                  <div class="cnt-vote">
+                                    <div class="vote">Yes: 82%</div>
+                                    <div class="notvote">NoWithVeto: 0.72%</div>
+                                  </div>
+                                  <div class="cnt-vote cnt-absta">
+                                    <div class="no-ab">No: 12%</div>
+                                    <div class="abstain">Abstain: 5.28%</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="item-vali-detail">
+                                <div class="title-item-vali">
+                                  <div class="number">1</div>
+                                  <div class="cnt-text"><a href="#">Status</a><a class="active" href="#">Voting Perlod</a></div>
+                                </div>
+                                <div class="box-item-detail">
+                                  <h3>Fixing Centralization From Gamed Stakedrop</h3>
+                                  <div class="sub-title-item">This is the account that gamed the fair stakedrop. </div>
+                                  <ul class="info-item">
+                                    <li> <span class="title">Proposer:</span><span class="info"> juno1r…jhwwccx</span></li>
+                                    <li> <span class="title">Submitted on:</span><span class="info"> 07-Oct-2021 19:55:41</span></li>
+                                    <li> <span class="title">Voting Period:</span><span class="info"> 12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58</span></li>
+                                  </ul>
+                                </div>
+                                <div class="bottom-item-vali">
+                                  <div class="cnt-vote">
+                                    <button class="btn btn-vote">Vote</button>
+                                  </div>
+                                  <div class="cnt-vote">
+                                    <div class="vote">Yes: 82%</div>
+                                    <div class="notvote">NoWithVeto: 0.72%</div>
+                                  </div>
+                                  <div class="cnt-vote cnt-absta">
+                                    <div class="no-ab">No: 12%</div>
+                                    <div class="abstain">Abstain: 5.28%</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- .member-main-->
+          </div>
+        </div>
+      </div>
+      <!-- .page-content-->
+    </div>
+    <!-- .member-->
+    <!--.page-container-->
+
+    <!-- include ../includes/footer.jade-->
+
+    <!-- Vendor jQuery (CORE PLUGINS - METRONIC)-->
+    <script type="text/javascript" src="admin/assets/js/jquery.min.js"></script>
+    <script type="text/javascript" src="admin/assets/js/bootstrap.min.js"> </script>
+
+    <!-- Theme Script-->
+    <script type="text/javascript" src="https://kit.fontawesome.com/8b9922aecc.js"></script>
+    <script type="text/javascript" src="admin/assets/js/admin.js"></script>
+    <script type="text/javascript" src="admin/assets/js/customer.js"></script>
+  </body>
+</html>

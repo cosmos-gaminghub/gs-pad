@@ -1,0 +1,40 @@
+#popupStakeTokens.modal.modal-dialog-centered.fade.popup_customer(tabindex='-1',role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true', aria-label="Close")
+          span(aria-hidden="true")
+      .modal-body
+        .content-stake
+          .title-popup-stake
+            |Stake Tokens
+          .form-token
+            .form-group
+              .dropdown
+                a.js-link(href="#") Select validator
+                  i.fa.fa-angle-down
+                ul.js-dropdown-list
+                  li
+                    .item-stake
+                      .icon
+                      .name
+                        |Bro_n_Bro
+                  li
+                    .item-stake
+                      .icon
+                      .name
+                        |Bro_n_Bro
+                  li
+                    .item-stake
+                      .icon
+                      .name
+                        |Bro_n_Bro
+            .form-group
+              input.form-control(type='password', required='',name="pass" placeholder="Enter tokens to Stake" )
+              .text-max Max
+            .form-group
+              .text-form
+                span.text Max Available tokens:
+                span.number 0
+            .form-group
+              button.btn.btn-vote STAKE 

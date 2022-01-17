@@ -1,0 +1,47 @@
+#contentDetailProposal.modal.modal-dialog-centered.fade.popup_customer(tabindex='-1',role="dialog", aria-labelledby="exampleModalLabel", aria-hidden="true")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal', aria-hidden='true')
+          span(aria-hidden="true")
+      .modal-body
+        .item-proposal-detail
+          .title-item-proposal
+            .number-title
+              .number 04
+              h3 Fixing Centralization From Gamed Stakedrop
+            .cnt-text
+              a(href="#") Status
+              a.active(href="#") Voting Perlod
+        .box-item-detail-proposal
+          .left-item-detail
+            .box-left-detail
+              ul.info-item
+                li 
+                  span.title Proposer:
+                  span.info  juno1r…jhwwccx
+                li 
+                  span.title Submitted on:
+                  span.info  07-Oct-2021 19:55:41
+                li 
+                  span.title Voting Period:
+                  span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+              p This is the account that gamed the fair stakedrop. 
+              p It has 2.5 million Juno instead of 50k (Which was the max per account)  
+              p One of the main reasons for this proposal is that this address has staked the majority to one validator. This action is centralizing the network. They also did not delegate until Juno started trading on Osmosis. This would indicate that it was done so that it would be impossible to just restart the chain with this amount changed to 50k. 
+              p They just started to redelegate 250k Juno to SG1, which is the second biggest validator I can only assume because of the backlash. SG1 is the 2nd biggest validator so they don’t seem to understand the concept of decentralization. By not fixing this issue now it will lead to long term centralized governance issues. 
+              p I propose that we blacklist/delete 90% of the Juno in this account. This action is not done lightly. By the time this proposal goes through, they will not have been able to undelegate in time to prevent the decision of governance. 
+              p By voting yes to this proposal you agree that the Juno tokens in this account be reduced by 90% and that  future blacklisting/reducing of coins should not be taken lightly.
+          .right-item-proposal
+            .cnt-proposal
+              .chart
+                img(src="assets/images/chart1.png", alt="")
+              .cnt-vote
+                .vote Yes: 82%
+                .notvote NoWithVeto: 0.72%
+              .cnt-vote.cnt-absta
+                .no-ab No: 12%
+                .abstain Abstain: 5.28% 
+              .cnt-vote
+                button.btn.btn-vote Vote
+

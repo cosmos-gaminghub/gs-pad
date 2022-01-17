@@ -1,0 +1,498 @@
+extends ../layouts/master.jade
+
+append titlePage
+  title Cosmos Explore
+
+append body
+  +body(class="page-header-fixed page-quick-sidebar-over-content page-account page-account-vp")
+
+append body-contents
+  ="\n"
+  .page-container
+    include ../includes/page-sidebar.jade
+    ="\n"
+    .page-content-wrapper
+      .page-content.home-page
+        .container
+          .content-wallet
+            .row
+              .col-md-12
+                .cnt-acount-user
+                  .name-acount
+                    .name USERNAME
+                    .cnt-link-copy
+                      .link juno1n…xyqq087
+                      button.btn.btn-copy Copy
+                  .icon
+            .content-proposal-detail
+              .row
+                .col-md-12
+                  .cnt-wallet-left
+                    .cnt-proppsals
+                      .title-proppsal
+                        .title.title-tab
+                          ul 
+                            li
+                              a.active(href="#all") All
+                            li
+                              a(href="#passed") Passed
+                            li 
+                              a(href="#pending") Pending
+                            li
+                              a(href="#reject") Rejected
+                      .content-tab-proposal
+                        .content-tab#all
+                          .content-detail
+                            .content-detail-prop
+                              ul
+                                li
+                                  .item-proposal-detail
+                                    a(href="#" data-toggle="modal" data-target="#contentDetailProposal")
+                                      .title-item-proposal
+                                        .number-title
+                                          .number 04
+                                          h3 Fixing Centralization From Gamed Stakedrop
+                                        .cnt-text
+                                          a(href="#") Status
+                                          a.active(href="#") Voting Perlod
+                                      .box-item-detail-proposal
+                                        .left-item-detail 
+                                          .sub-title-item This is the account that gamed the fair stakedrop. 
+                                          ul.info-item
+                                            li 
+                                              span.title Proposer:
+                                              span.info  juno1r…jhwwccx
+                                            li 
+                                              span.title Submitted on:
+                                              span.info  07-Oct-2021 19:55:41
+                                            li 
+                                              span.title Voting Period:
+                                              span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                        .right-item-proposal
+                                          .chart
+                                            img(src="assets/images/chart.png", alt="")
+                                          .cnt-vote
+                                            .vote Yes: 82%
+                                            .notvote NoWithVeto: 0.72%
+                                          .cnt-vote.cnt-absta
+                                            .no-ab No: 12%
+                                            .abstain Abstain: 5.28% 
+                                          .cnt-vote
+                                            button.btn.btn-vote Vote  
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-red Rejected
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-orange Pending
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-green Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                        .content-tab#passed
+                          .content-detail
+                            .content-detail-prop
+                              ul
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-green Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-green Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-green Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                        .content-tab#pending
+                          .content-detail
+                            .content-detail-prop
+                              ul
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-orange Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-orange Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-orange Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                        .content-tab#reject
+                          .content-detail
+                            .content-detail-prop
+                              ul
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-red Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-red Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                                li
+                                  .item-proposal-detail
+                                    .title-item-proposal
+                                      .number-title
+                                        .number 04
+                                        h3 Fixing Centralization From Gamed Stakedrop
+                                      .cnt-text
+                                        a(href="#") Status
+                                        a.active(href="#").bg-red Passed
+                                    .box-item-detail-proposal
+                                      .left-item-detail 
+                                        .sub-title-item This is the account that gamed the fair stakedrop. 
+                                        ul.info-item
+                                          li 
+                                            span.title Proposer:
+                                            span.info  juno1r…jhwwccx
+                                          li 
+                                            span.title Submitted on:
+                                            span.info  07-Oct-2021 19:55:41
+                                          li 
+                                            span.title Voting Period:
+                                            span.info  12-Oct-2021 19:28:58 to 17-Oct-2021 19:28:58
+                                      .right-item-proposal
+                                        .chart
+                                          img(src="assets/images/chart.png", alt="")
+                                        .cnt-vote
+                                          .vote Yes: 82%
+                                          .notvote NoWithVeto: 0.72%
+                                        .cnt-vote.cnt-absta
+                                          .no-ab No: 12%
+                                          .abstain Abstain: 5.28% 
+                                        .cnt-vote
+                                          button.btn.btn-vote Vote
+                        
+          // .member-main
+    // .page-content
+  // .member
+  //.page-container
+
+  ="\n"
+  include ../includes/popupConfirm.jade
+
