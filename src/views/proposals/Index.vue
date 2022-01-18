@@ -225,7 +225,6 @@ export default {
         await this.getWallet()
         await this.getStargetClient()
         await this.getProposals()
-        await this.formatProposals()
     },
     computed: {
         ...mapState('auth', ["address"])
@@ -254,6 +253,8 @@ export default {
             try {
                 const res = await this.wallet.getListProposal(this.statusProposal.UNRECOGNIZED, "", "")
                 this.proposals = res.proposals
+                this.formatProposals()
+                await this.getProposalProposer(0)
             } catch (err) {
                 this.$toast.error(err.message);
             }
@@ -275,11 +276,32 @@ export default {
         async getProposal(proposalId) {
             return await WalletHelper.getSumitProposer(this.stargateClient, proposalId)
         },
-        async formatProposals() {
+        async getProposalProposer(index) {
+            const { proposals } = this
+            const array = [];
+            for (let i = 0; i < 3; i++) {
+                if (proposals[index + i]) {
+                    const value = proposals[index + i];
+                    if (value && value.proposalId) {
+                        array.push(this.getProposal(value.proposalId));
+                    }
+                } else {
+                    break;
+                }
+            }
+            Promise.all(array).then((data) => {
+                data.forEach((item, i) => {
+                    this.$set(this.proposals[index + i], 'proposer', item)
+                })
+                if (index + 3 <= proposals.length - 1) {
+                    this.getProposalProposer(index + 3);
+                }
+            });
+        },
+        formatProposals() {
             const proposals = [...this.proposals]
-            for await (const data of proposals) {
+            for (const data of proposals) {
                 data.des = WalletHelper.convertContent(data.content.value)
-                data.proposer = await this.getProposal(data.proposalId)
             }
             this.proposals = [...proposals]
         },

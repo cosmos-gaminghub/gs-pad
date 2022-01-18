@@ -24,7 +24,8 @@
                         <div class="status-items">
                             <div class="title">Rewards</div>
                             <div class="number">{{ reward.toFixed(1) }}</div>
-                            <div class="list-link"><a  href="javascript:void(0)" @click="claim" >CLAIM</a>
+                            <div class="list-link"><a :class="reward===0?'disable':''" href="javascript:void(0)"
+                                                      @click="claim">CLAIM</a>
                             </div>
                         </div>
                         <div class="status-items">
@@ -62,7 +63,7 @@
                                         <div class="cos-table-list">
                                             <div class="table-responsive" ref="validatorTable">
                                                 <ValidatorTable
-                                                    :validators="allValidators.validators"
+                                                    :validators="allValidators"
                                                     :isStake="false"
                                                     :unbondings="unbondings"
                                                     @showModal="showModal"
@@ -79,7 +80,6 @@
                                                 <ValidatorTable
                                                     :validators="stakedValidators.validators"
                                                     :isStake="true"
-                                                    :unbondings="unbondings"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -129,10 +129,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
-                                @click="closeModal('modalStake')">
+                                @click="closeModal('modalStake','closeStake')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalStake :validators="validators" :coin="coin"/>
+                    <ModalStake :validators="validators" :coin="coin" ref="closeStake"/>
                 </div>
             </div>
         </div>
@@ -142,10 +142,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
-                                @click="closeModal('modalUnDelegate')">
+                                @click="closeModal('modalUnDelegate','closeUnDelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalUndelegate :stakedValidators="stakedValidators.validators" :delegate="delegate"/>
+                    <ModalUndelegate :stakedValidators="stakedValidators.validators" :delegate="delegate"
+                                     ref="closeUnDelegate"/>
                 </div>
             </div>
         </div>
@@ -155,11 +156,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
-                                @click="closeModal('modalReDelegate')">
+                                @click="closeModal('modalReDelegate','closeRelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
                     <ModalRelegate :stakedValidators="stakedValidators.validators" :validators="validators"
-                                   :delegate="delegate"/>
+                                   :delegate="delegate" ref="closeRelegate"/>
                 </div>
             </div>
         </div>
@@ -169,10 +170,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
-                                @click="closeModal('modalDelegate')">
+                                @click="closeModal('modalDelegate','closeDelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalDelegate :validators="validators" :coin="coin" :titleDelegate="titleDelegate"/>
+                    <ModalDelegate :validators="validators" :coin="coin" :titleDelegate="titleDelegate"
+                                   ref="closeDelegate"/>
                 </div>
             </div>
         </div>
@@ -270,7 +272,6 @@ export default {
     },
     data: function () {
         return {
-            allValidators: [],
             unbondings: [],
             activeTab: "allValidators",
             stakedValidators: [],
@@ -291,6 +292,10 @@ export default {
     },
     computed: {
         ...mapState('auth', ["address"]),
+        allValidators() {
+            const validators = [...this.validators]
+            return validators.splice(0, 10)
+        }
     },
     async mounted() {
         await this.getWallet()
@@ -300,7 +305,7 @@ export default {
         await this.getRewards()
         await this.getBalances()
         await this.getDelegation()
-        // this.unbonding()
+        this.unbonding()
         await this.getProposals()
         this.$store.subscribe(mutation => {
             if (mutation.type === 'auth/setAddress') {
@@ -345,7 +350,8 @@ export default {
             this.setIsOpen(true)
 
         },
-        closeModal(refName) {
+        closeModal(refName, refCloseName) {
+            this.$refs[refCloseName].closeModal()
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")
             this.$refs[refName].style.display = "none"
@@ -366,12 +372,37 @@ export default {
             try {
                 const data = await this.wallet.getValidators("BOND_STATUS_BONDED")
                 this.validators = [...data.validators]
-                data.validators.splice(10, data.validators.length - 10)
-                this.allValidators = data
+                await this.getValidatorImage(0)
             } catch (err) {
                 this.$toast.error(err.message);
             }
             this.hideLoading(loader)
+        },
+        async getValidatorImage(index) {
+            const { validators } = this
+            const array = [];
+            for (let i = 0; i < 3; i++) {
+                if (validators[index + i]) {
+                    const value = validators[index + i];
+                    if (value && value.description && value.description.identity) {
+                        array.push(this.getKeyBaseImage(value.description.identity));
+                    }
+                } else {
+                    break;
+                }
+            }
+            Promise.all(array).then((data) => {
+                data.forEach((item, i) => {
+                    this.$set(this.validators[index + i], 'imageUrl', item)
+                })
+                if (index + 3 <= validators.length - 1) {
+                    this.getValidatorImage(index + 3);
+                }
+            });
+        },
+        async getKeyBaseImage (identity) {
+            const response = await this.axios.get(`https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${identity}&fields=pictures`)
+            return response.data.them[0].pictures.primary.url
         },
         async getProposals() {
             const loader = this.showLoadling("proposalTable")
@@ -402,6 +433,7 @@ export default {
                 response.total.forEach(item => {
                     if (item.denom === DENOM) {
                         this.reward = item.amount / 10 ** 24
+
                     }
                 })
                 this.listReward = response.rewards
@@ -441,19 +473,16 @@ export default {
             }
         },
         async claim() {
-            if (this.listReward.rewards>0){
-                try {
-                    const kelprWallet = await KelprWallet.getKeplrWallet()
-                    const address = await KelprWallet.getAddress()
-
-                    for await (const data of this.listReward.rewards) {
-                        await kelprWallet.claimRewards(address, data.validatorAddress)
-                    }
-                } catch (err) {
-                    this.$toast.error(err.message);
+            try {
+                const kelprWallet = await KelprWallet.getKeplrWallet()
+                const address = await KelprWallet.getAddress()
+                for await (const data of this.listReward) {
+                    await kelprWallet.claimRewards(address, data.validatorAddress)
                 }
+            } catch (err) {
+                this.$toast.error(err.message);
             }
-            return
+
 
         },
         showLoadling(refName) {
@@ -486,6 +515,7 @@ export default {
         isEmpty(obj) {
             return Object.keys(obj).length === 0;
         },
+
     }
 }
 </script>

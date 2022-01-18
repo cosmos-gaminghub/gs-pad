@@ -24,7 +24,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive" ref="validatorTable">
-                                                <ValidatorTable :unbondings="unbondings" :validators="allValidators.validators" @showModal="showModal" :isStake="false"/>
+                                                <ValidatorTable :unbondings="unbondings" :validators="allValidators" @showModal="showModal" :isStake="false"/>
                                             </div>
                                         </div>
                                     </div>
@@ -34,7 +34,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive">
-                                                <ValidatorTable :unbondings="unbondings" :validators="stakedValidators.validators" @showModal="showModal" :isStake="true"/>
+                                                <ValidatorTable :unbondings="unbondings" :validators="stakedValidators" @showModal="showModal" :isStake="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -51,10 +51,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
-                                @click="closeModal('modalDelegate')">
+                                @click="closeModal('modalDelegate','closeDelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalDelegate :validators="allValidators.validators" :coin="coin" :titleDelegate="titleDelegate"/>
+                    <ModalDelegate :validators="allValidators.validators" :coin="coin" :titleDelegate="titleDelegate" ref="closeDelegate"/>
                 </div>
             </div>
         </div>
@@ -122,15 +122,44 @@ export default {
         async getAllValidators() {
             const loader = this.showLoadling("validatorTable")
             try {
-                this.allValidators = await this.wallet.getValidators("BOND_STATUS_BONDED")
+                const res = await this.wallet.getValidators("BOND_STATUS_BONDED")
+                this.allValidators = res.validators
+                await this.getValidatorImage(0, this.allValidators, "allValidators")
             } catch (err) {
                 this.$toast.error(err.message)
             }
             this.hideLoading(loader)
         },
+        async getValidatorImage(index, validators, property) {
+            const array = [];
+            for (let i = 0; i < 3; i++) {
+                if (validators[index + i]) {
+                    const value = validators[index + i];
+                    if (value && value.description && value.description.identity) {
+                        array.push(this.getKeyBaseImage(value.description.identity));
+                    }
+                } else {
+                    break;
+                }
+            }
+            Promise.all(array).then((data) => {
+                data.forEach((item, i) => {
+                    this.$set(this[property][index + i], 'imageUrl', item)
+                })
+                if (index + 3 <= validators.length - 1) {
+                    this.getValidatorImage(index + 3, validators, property);
+                }
+            });
+        },
+        async getKeyBaseImage (identity) {
+            const response = await this.axios.get(`https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${identity}&fields=pictures`)
+            return response.data.them[0].pictures.primary.url
+        },
         async stakeds() {
             if(this.address){
-                this.stakedValidators = await this.wallet.getStakedValidators(this.address)
+                const res = await this.wallet.getStakedValidators(this.address)
+                this.stakedValidators = res.validators
+                // await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
         async unbonding() {
@@ -152,7 +181,8 @@ export default {
             this.$refs[refName].style.display = "block"
             this.setIsOpen(true)
         },
-        closeModal(refName) {
+        closeModal(refName,closeRefName) {
+            this.$refs[closeRefName].closeModal()
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")
             this.$refs[refName].style.display = "none"

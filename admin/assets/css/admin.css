@@ -18,7 +18,7 @@ body .login {
     font-weight: 300;
     line-height: 30px;
     position: absolute;
-    bottom: -20px;
+    bottom: -25px;
 }
 .login {
   padding-top: 100px;
@@ -1105,7 +1105,7 @@ ul {
   margin-bottom: 5px;
   font-weight: 700;
   cursor: pointer;
-} 
+}
 #contentDetailProposal .modal-dialog .box-item-detail-proposal .right-item-proposal .cnt-vote > .disable {
   padding-left: 0px;
 }
@@ -1381,6 +1381,30 @@ ul {
   padding-bottom: 0;
   overflow: visible!important;
 }
+.popup_customer .content-stake .dropdown .js-link {
+    justify-content: flex-start!important;
+}
+.popup_customer .content-stake .dropdown .js-link .icon{
+    max-width: 24px;
+    width: 100%;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.popup_customer .content-stake .dropdown .js-link .icon img{
+    max-width: 100%;
+    height: auto;
+}
+.popup_customer .content-stake .dropdown .js-link i{
+    position: absolute;
+    right: 10px;
+    top: calc(50% - 6px);
+}
+
 @media (min-width: 1025px) {
   .container {
     padding: 0!important;

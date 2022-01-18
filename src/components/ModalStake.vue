@@ -4,14 +4,17 @@
             <div class="title-popup-stake">Stake Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
-                                             href="#" @click="clickDropdown()">{{ title }}<i
-                        class="fa fa-angle-down"></i></a>
+                    <div class="dropdown">
+                        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
+                            <ValidatorImage :imageUrl="imageUrl" />
+                            {{ title }}
+                            <i class="fa fa-angle-down"></i>
+                        </a>
                         <ul class="js-dropdown-list" :style="{display: style}">
                             <li v-for="(validator,index) in validators" :key="index">
                                 <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker)">
-                                    <div class="icon"></div>
+                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, validator.imageUrl)">
+                                    <ValidatorImage :imageUrl="validator.imageUrl"/>
                                     <div class="name">{{ validator.description.moniker }}</div>
                                 </div>
                             </li>
@@ -34,7 +37,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-vote" @click="sendRequest"
-                            :disabled=clickSubmit>STAKE
+                            :disabled="clickSubmit">STAKE
                     </button>
                 </div>
             </div>
@@ -43,38 +46,43 @@
 </template>
 
 <script>
+import ValidatorImage from "./validator/ValidatorImage";
+
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalStake",
+    components: {ValidatorImage},
     data: function () {
         return {
             dropdown: false,
             style: 'none',
             addressDelegator: '',
-            token: '',
             amount: {
                 denom: DENOM,
                 amount: this.token
             },
-            title: 'Select validator',
             error: '',
             formInvalid: {
                 borderColor: ''
-            }
+            },
+            token: '',
+            title: 'Select validator',
+            imageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg'
         }
     },
     props: {
         validators: Array,
-        coin: String
+        coin: String,
+
     },
     computed: {
         clickSubmit() {
             if (this.error || this.title === 'Select validator' || this.token === '') {
-                return 'disabled'
+                return true
             }
-            return ''
+            return false
         }
     },
     methods: {
@@ -87,11 +95,12 @@ export default {
                 this.dropdown = true
             }
         },
-        chooseValidator(address, title) {
+        chooseValidator(address, title, imageUrl) {
             this.addressDelegator = address
             this.dropdown = false
             this.style = 'none'
             this.title = title
+            this.imageUrl = imageUrl
         },
         async sendRequest() {
             try {
@@ -115,6 +124,14 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
+        closeModal() {
+            this.token = ''
+            this.title = 'Select validator'
+            this.error = ''
+            this.formInvalid.borderColor = ''
+            this.dropdown = false
+            this.style = 'none'
+        },
 
     }
 }
@@ -129,5 +146,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
-
+::placeholder {
+    color: #C0B1B1B8 !important;
+}
 </style>

@@ -4,15 +4,17 @@
             <div class="title-popup-stake">Redelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown"><a :class="{'js-link active':srcRef.dropdown,'js-link':!srcRef.dropdown}"
-                                             href="#"
-                                             @click="clickDropdown('srcRef')">{{ titleStakedValidator }}<i
-                        class="fa fa-angle-down"></i></a>
+                    <div class="dropdown">
+                        <a :class="{'js-link active':srcRef.dropdown,'js-link':!srcRef.dropdown}" href="#" @click="clickDropdown('srcRef')">
+                            <ValidatorImage :imageUrl="srcImageUrl"/> 
+                            {{ titleStakedValidator }}
+                            <i class="fa fa-angle-down"></i>
+                        </a>
                         <ul class="js-dropdown-list" ref="srcRef" :style="{display: srcRef.style}">
                             <li v-for="(stakedValidator,index) in stakedValidators" :key="index">
                                 <div class="item-stake"
-                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker, 'srcRef')">
-                                    <div class="icon"></div>
+                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker, 'srcRef', stakedValidator.imageUrl)">
+                                     <ValidatorImage :imageUrl="stakedValidator.imageUrl"/>
                                     <div class="name">{{ stakedValidator.description.moniker }}</div>
                                 </div>
                             </li>
@@ -20,15 +22,17 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="dropdown"><a :class="{'js-link active':dstRef.dropdown,'js-link':!dstRef.dropdown}"
-                                             href="#"
-                                             @click="clickDropdown('dstRef')">{{ titleValidator }}<i
-                        class="fa fa-angle-down"></i></a>
+                    <div class="dropdown">
+                        <a :class="{'js-link active':dstRef.dropdown,'js-link':!dstRef.dropdown}" href="#" @click="clickDropdown('dstRef')">
+                            <ValidatorImage :imageUrl="dstImageUrl"/>  
+                            {{ titleValidator }}
+                            <i class="fa fa-angle-down"></i>
+                        </a>
                         <ul class="js-dropdown-lists" :style="{display: dstRef.style}">
                             <li v-for="(validator,index) in validators" :key="index">
                                 <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, 'dstRef')">
-                                    <div class="icon"></div>
+                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, 'dstRef', validator.imageUrl)">
+                                    <ValidatorImage :imageUrl="validator.imageUrl"/>
                                     <div class="name">{{ validator.description.moniker }}</div>
                                 </div>
                             </li>
@@ -47,7 +51,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-vote" @click="sendData()" :disabled=clickSubmit>REDELEGATE</button>
+                    <button class="btn btn-vote" @click="sendData()" :disabled="clickSubmit">REDELEGATE</button>
                 </div>
             </div>
         </div>
@@ -56,9 +60,11 @@
 
 <script>
 import {KelprWallet} from "../utils/connectKeplr";
+import ValidatorImage from "./validator/ValidatorImage";
 
 export default {
     name: "ModalRelegate",
+    components: {ValidatorImage},
     data: function () {
         return {
             dropdown: false,
@@ -69,6 +75,8 @@ export default {
             token: '',
             dstValidatorAddress: '',
             srcValidatorAddress: '',
+            dstImageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg',
+            srcImageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg',
             amount: {
                 denom: process.env.VUE_APP_DENOM,
                 amount: this.token
@@ -93,12 +101,12 @@ export default {
         validators: Array,
         delegate: Array
     },
-    computed:{
+    computed: {
         clickSubmit() {
             if (this.error || this.title == 'Select validator' || this.token == '') {
-                return 'disabled'
+                return true
             }
-            return ''
+            return false
         }
     },
     methods: {
@@ -109,9 +117,10 @@ export default {
                 this.showDropDown(ref)
             }
         },
-        chooseStaked(address, title, ref) {
+        chooseStaked(address, title, ref, imageUrl) {
             this.titleStakedValidator = title
             this.srcValidatorAddress = address
+            this.srcImageUrl = imageUrl
             this.delegate.forEach(item => {
                 if (item.delegation.validatorAddress === address) {
                     this.tokenStaked = Number(item.balance.amount) / 10 ** 8
@@ -122,9 +131,10 @@ export default {
         maxToken() {
             this.token = this.tokenStaked
         },
-        chooseValidator(address, title, ref) {
+        chooseValidator(address, title, ref, imageUrl) {
             this.titleValidator = title
             this.dstValidatorAddress = address
+            this.dstImageUrl = imageUrl
             this.hideDropDown(ref)
         },
         hideDropDown(ref) {
@@ -155,18 +165,29 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
-
+        closeModal() {
+            this.token = ''
+            this.titleStakedValidator = 'Select validator from'
+            this.titleValidator = 'Select validator to'
+            this.error = ''
+            this.formInvalid.borderColor = ''
+            this.hideDropDown('srcRef')
+            this.hideDropDown('dstRef')
+        }
     }
 }
 </script>
 
 <style scoped>
 input[type='number'] {
-    -moz-appearance:textfield;
+    -moz-appearance: textfield;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+::placeholder {
+    color: #C0B1B1B8 !important;
 }
 </style>

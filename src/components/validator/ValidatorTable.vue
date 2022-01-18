@@ -16,7 +16,9 @@
                 :key="index">
                 <td>
                     <div class="td-acount">
-                        <ValidatorImage :identity="validator.description.identity" />
+                        <div class="icon">
+                            <img :src="validator.imageUrl" style="max-width: 100%;height: auto">
+                        </div>
                         <span>{{ validator | getMoniker }}</span>
                     </div>
                 </td>
@@ -34,11 +36,9 @@
 </template>
 <script>
 import ValidatorNoData from "@/components/validator/ValidatorNoData.vue"
-import ValidatorImage from "@/components/validator/ValidatorImage.vue"
 export default {
     components: {
         ValidatorNoData,
-        ValidatorImage
     },
     props: {
         validators: Array,
@@ -80,7 +80,7 @@ export default {
                 },
             ],
             sort_type: "",
-            sort_field: ""
+            sort_field: "",
         }
     },
     filters: {
@@ -131,7 +131,7 @@ export default {
                         return a.commission.commissionRates.rate - b.commission.commissionRates.rate;
                     } else if(sortField == "description.moniker") {
                         return b.description.moniker === a.description.moniker ? 0 : b.description.moniker < a.description.moniker ? 1 : -1; 
-                    }
+                    } 
                     return a[sortField] - b[sortField];
                 });
             } else {
@@ -140,7 +140,7 @@ export default {
                         return b.commission.commissionRates.rate - a.commission.commissionRates.rate;
                     } else if(sortField == "description.moniker") {
                         return b.description.moniker === a.description.moniker ? 0 : b.description.moniker < a.description.moniker ? -1 : 1; 
-                    }
+                    } 
                     return b[sortField] - a[sortField];
                 });
             }

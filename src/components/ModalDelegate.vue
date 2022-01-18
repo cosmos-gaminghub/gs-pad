@@ -5,13 +5,15 @@
             <div class="form-token">
                 <div class="form-group">
                     <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
-                                             href="#" @click="clickDropdown()">{{ titleDelegate }}<i
+                                             href="#" @click="clickDropdown()">
+                        <ValidatorImage :imageUrl="imageUrl" />
+                        {{ titleDelegate }}<i
                         class="fa fa-angle-down"></i></a>
                         <ul class="js-dropdown-list" :style="{display: style}">
                             <li v-for="(validator,index) in validators" :key="index">
                                 <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker)">
-                                    <div class="icon"></div>
+                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, validator.imageUrl)">
+                                    <ValidatorImage :imageUrl="validator.imageUrl" ref="resetValidator"/>
                                     <div class="name">{{ validator.description.moniker }}</div>
                                 </div>
                             </li>
@@ -29,24 +31,28 @@
                         class="number">{{ Number(coin) / 10 ** 6 }}</span></div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-vote" @click="sendRequest" :disabled=clickSubmit>STAKE</button>
+                    <button class="btn btn-vote" @click="sendRequest" :disabled="clickSubmit">STAKE</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import ValidatorImage from "./validator/ValidatorImage";
+
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalDelegate",
+    components: {ValidatorImage},
     data: function () {
         return {
             dropdown: false,
             style: 'none',
             addressDelegator: '',
             token: '',
+            title: 'Select validator',
             amount: {
                 denom: DENOM,
                 amount: this.token
@@ -54,20 +60,21 @@ export default {
             error: '',
             formInvalid: {
                 borderColor: ''
-            }
+            },
+            imageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg'
         }
     },
     props: {
         validators: Array,
         coin: String,
-        titleDelegate: String
+        titleDelegate: String,
     },
     computed: {
         clickSubmit() {
-            if (this.error || this.title == 'Select validator' || this.token == '') {
-                return 'disabled'
+            if (this.error || this.token === '') {
+                return true
             }
-            return ''
+            return false
         }
     },
     methods: {
@@ -80,11 +87,12 @@ export default {
                 this.dropdown = true
             }
         },
-        chooseValidator(address, title) {
+        chooseValidator(address, title, imageUrl) {
             this.addressDelegator = address
             this.dropdown = false
             this.style = 'none'
             this.titleDelegate = title
+            this.imageUrl = imageUrl
         },
         async sendRequest() {
             try {
@@ -108,7 +116,13 @@ export default {
                 this.formInvalid.borderColor = ''
             }
         },
-
+        closeModal() {
+            this.token = ''
+            this.error = ''
+            this.formInvalid.borderColor = ''
+            this.dropdown = false
+            this.style = 'none'
+        },
     }
 }
 </script>
@@ -122,5 +136,8 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+::placeholder {
+    color: #C0B1B1B8 !important;
 }
 </style>
