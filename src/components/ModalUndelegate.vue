@@ -4,20 +4,17 @@
             <div class="title-popup-stake">Undelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#"
-                                             @click="clickDropdown()">
-                        <div class="icon">
-                            <img
-                                src="https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg"
-                                alt="">
-                        </div>
-                        {{ title }}<i
-                        class="fa fa-angle-down"></i></a>
+                    <div class="dropdown">
+                        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
+                            <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
+                            {{ title }}
+                            <i class="fa fa-angle-down"></i>
+                        </a>
                         <ul class="js-dropdown-list" :style="{display: style}">
                             <li v-for="(stakedValidator,index) in stakedValidators" :key="index">
                                 <div class="item-stake"
-                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker)">
-                                    <div class="icon"></div>
+                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker,stakedValidator.imageUrl)">
+                                    <ValidatorImage :imageUrl="stakedValidator.imageUrl" />
                                     <div class="name">{{ stakedValidator.description.moniker }}</div>
                                 </div>
                             </li>
@@ -36,7 +33,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-vote" @click="sendRequest" :disabled=clickSubmit>UNDELEGATE</button>
+                    <button class="btn btn-vote" @click="sendRequest" :disabled="clickSubmit">UNDELEGATE</button>
                 </div>
             </div>
         </div>
@@ -44,11 +41,13 @@
 </template>
 
 <script>
+import ValidatorImage from "./validator/ValidatorImage";
 const DEMON = process.env.VUE_APP_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalUndelegate",
+    components: {ValidatorImage},
     data: function () {
         return {
             dropdown: false,
@@ -64,7 +63,8 @@ export default {
             error: '',
             formInvalid: {
                 borderColor: ''
-            }
+            },
+            imageUrl:""
         }
     },
     props: {
@@ -73,6 +73,7 @@ export default {
     },
     computed: {
         clickSubmit() {
+
             if (this.error || this.title == 'Select validator' || this.token == '') {
                 return true
             }
@@ -92,7 +93,7 @@ export default {
         maxToken() {
             this.token = this.tokenStaked
         },
-        chooseStaked(address, title) {
+        chooseStaked(address, title,imageUrl) {
             this.title = title
             this.addressDelegator = address
             this.delegate.forEach(item => {
@@ -102,6 +103,7 @@ export default {
             })
             this.dropdown = false
             this.style = 'none'
+            this.imageUrl = imageUrl
         },
         async sendRequest() {
             try {
@@ -129,7 +131,8 @@ export default {
             this.formInvalid.borderColor = ''
             this.dropdown = false
             this.style = 'none'
-        }
+        },
+
     }
 }
 </script>
@@ -143,6 +146,7 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
+
 ::placeholder {
     color: #C0B1B1B8 !important;
 }

@@ -52,7 +52,7 @@
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
                                 @click="closeModal('modalDelegate','closeDelegate')">
-                            <span aria-hidden="true"></span></button>
+                            <span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
                     <ModalDelegate :validators="allValidators.validators" :coin="coin" :titleDelegate="titleDelegate" ref="closeDelegate"/>
                 </div>

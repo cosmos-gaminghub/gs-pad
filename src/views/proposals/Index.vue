@@ -128,7 +128,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true"
-                                @click="closeModal"><span aria-hidden="true"></span></button>
+                                @click="closeModal"><span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
                     <div class="modal-body" v-if="!isEmpty(proposalDetail)">
                         <div class="item-proposal-detail">

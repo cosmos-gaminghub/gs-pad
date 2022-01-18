@@ -1,7 +1,7 @@
 <template>
     <div class="content-wallet">
         <div class="row">
-            <Login/>
+
             <div class="col-md-7 float-left">
                 <div class="content-wall-left">
                     <div class="blocks-status">
@@ -34,6 +34,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-5 float-right">
+                <Login/>
             </div>
         </div>
         <div class="content-validate-detail">
@@ -78,8 +81,9 @@
                                         <div class="cos-table-list">
                                             <div class="table-responsive">
                                                 <ValidatorTable
-                                                    :validators="stakedValidators.validators"
+                                                    :validators="stakedValidators"
                                                     :isStake="true"
+                                                    :unbondings="unbondings"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -130,7 +134,7 @@
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
                                 @click="closeModal('modalStake','closeStake')">
-                            <span aria-hidden="true"></span></button>
+                            <span aria-hidden="true" class="icon-close-modal" ></span></button>
                     </div>
                     <ModalStake :validators="validators" :coin="coin" ref="closeStake"/>
                 </div>
@@ -145,7 +149,7 @@
                                 @click="closeModal('modalUnDelegate','closeUnDelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalUndelegate :stakedValidators="stakedValidators.validators" :delegate="delegate"
+                    <ModalUndelegate :stakedValidators="stakedValidators" :delegate="delegate"
                                      ref="closeUnDelegate"/>
                 </div>
             </div>
@@ -157,9 +161,9 @@
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
                                 @click="closeModal('modalReDelegate','closeRelegate')">
-                            <span aria-hidden="true"></span></button>
+                            <span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
-                    <ModalRelegate :stakedValidators="stakedValidators.validators" :validators="validators"
+                    <ModalRelegate :stakedValidators="stakedValidators" :validators="validators"
                                    :delegate="delegate" ref="closeRelegate"/>
                 </div>
             </div>
@@ -171,7 +175,7 @@
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true" aria-label="Close"
                                 @click="closeModal('modalDelegate','closeDelegate')">
-                            <span aria-hidden="true"></span></button>
+                            <span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
                     <ModalDelegate :validators="validators" :coin="coin" :titleDelegate="titleDelegate"
                                    ref="closeDelegate"/>
@@ -184,7 +188,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true"
-                                @click="closeModal('modalProposal')"><span aria-hidden="true"></span></button>
+                                @click="closeModal('modalProposal')"><span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
                     <div class="modal-body" v-if="!isEmpty(proposalDetail)">
                         <div class="item-proposal-detail">
@@ -372,14 +376,13 @@ export default {
             try {
                 const data = await this.wallet.getValidators("BOND_STATUS_BONDED")
                 this.validators = [...data.validators]
-                await this.getValidatorImage(0)
+                await this.getValidatorImage(0, this.validators, "validators")
             } catch (err) {
                 this.$toast.error(err.message);
             }
             this.hideLoading(loader)
         },
-        async getValidatorImage(index) {
-            const { validators } = this
+        async getValidatorImage(index, validators, property) {
             const array = [];
             for (let i = 0; i < 3; i++) {
                 if (validators[index + i]) {
@@ -393,10 +396,10 @@ export default {
             }
             Promise.all(array).then((data) => {
                 data.forEach((item, i) => {
-                    this.$set(this.validators[index + i], 'imageUrl', item)
+                    this.$set(this[property][index + i], 'imageUrl', item)
                 })
                 if (index + 3 <= validators.length - 1) {
-                    this.getValidatorImage(index + 3);
+                    this.getValidatorImage(index + 3, validators, property);
                 }
             });
         },
@@ -469,7 +472,9 @@ export default {
         },
         async stakeds() {
             if (this.address) {
-                this.stakedValidators = await this.wallet.getStakedValidators(this.address)
+                const response = await this.wallet.getStakedValidators(this.address)
+                this.stakedValidators = response.validators
+                await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
         async claim() {

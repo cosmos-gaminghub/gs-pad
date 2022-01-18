@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <div class="dropdown">
                         <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
-                            <ValidatorImage :imageUrl="imageUrl" />
+                            <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
                             {{ title }}
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -69,7 +69,7 @@ export default {
             },
             token: '',
             title: 'Select validator',
-            imageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg'
+            imageUrl: ''
         }
     },
     props: {

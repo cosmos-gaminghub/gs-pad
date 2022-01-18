@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <div class="dropdown">
                         <a :class="{'js-link active':srcRef.dropdown,'js-link':!srcRef.dropdown}" href="#" @click="clickDropdown('srcRef')">
-                            <ValidatorImage :imageUrl="srcImageUrl"/> 
+                            <ValidatorImage :imageUrl="srcImageUrl" v-if="srcImageUrl"/>
                             {{ titleStakedValidator }}
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <div class="dropdown">
                         <a :class="{'js-link active':dstRef.dropdown,'js-link':!dstRef.dropdown}" href="#" @click="clickDropdown('dstRef')">
-                            <ValidatorImage :imageUrl="dstImageUrl"/>  
+                            <ValidatorImage :imageUrl="dstImageUrl" v-if="dstImageUrl"/>
                             {{ titleValidator }}
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -75,8 +75,8 @@ export default {
             token: '',
             dstValidatorAddress: '',
             srcValidatorAddress: '',
-            dstImageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg',
-            srcImageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg',
+            dstImageUrl: '',
+            srcImageUrl: '',
             amount: {
                 denom: process.env.VUE_APP_DENOM,
                 amount: this.token
@@ -103,6 +103,7 @@ export default {
     },
     computed: {
         clickSubmit() {
+
             if (this.error || this.title == 'Select validator' || this.token == '') {
                 return true
             }
@@ -173,7 +174,7 @@ export default {
             this.formInvalid.borderColor = ''
             this.hideDropDown('srcRef')
             this.hideDropDown('dstRef')
-        }
+        },
     }
 }
 </script>
