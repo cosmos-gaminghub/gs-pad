@@ -186,6 +186,9 @@ export default {
             this.setIsOpen(true)
         },
         closeModal(refName,closeRefName) {
+            if (refName == 'modalDelegate') {
+                this.titleDelegate = ''
+            }
             this.$refs[closeRefName].closeModal()
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")

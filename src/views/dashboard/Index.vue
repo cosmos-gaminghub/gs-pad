@@ -41,7 +41,7 @@
         </div>
         <div class="content-validate-detail">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-lg-7 col-md-12" style="margin-bottom: 30px;">
                     <div class="cnt-wallet-left">
                         <div class="cnt-validator">
                             <div class="title-vali">
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-lg-5 col-md-12">
                     <div class="cnt-wallet-right">
                         <div class="cnt-validator">
                             <div class="title-vali">
@@ -355,6 +355,9 @@ export default {
 
         },
         closeModal(refName, refCloseName) {
+            if (refName == 'modalDelegate') {
+                this.titleDelegate = ''
+            }
             this.$refs[refCloseName].closeModal()
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")

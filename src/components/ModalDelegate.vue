@@ -7,7 +7,7 @@
                     <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
                                              href="#" @click="clickDropdown()">
                         <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
-                        {{ titleDelegate }}<i
+                        {{ titleOption }}<i
                         class="fa fa-angle-down"></i></a>
                         <ul class="js-dropdown-list" :style="{display: style}">
                             <li v-for="(validator,index) in validators" :key="index">
@@ -55,7 +55,8 @@ export default {
             formInvalid: {
                 borderColor: ''
             },
-            imageUrl: ''
+            imageUrl: '',
+            titleOption: ''
         }
     },
     props: {
@@ -73,6 +74,7 @@ export default {
     },
     watch: {
         "titleDelegate": function (value) {
+            this.titleOption = value
             this.validators.forEach(item => {
                 if(item.description.moniker == value) {
                     this.addressDelegator = item.operatorAddress
@@ -95,7 +97,7 @@ export default {
             this.addressDelegator = address
             this.dropdown = false
             this.style = 'none'
-            this.titleDelegate = title
+            this.titleOption = title
             this.imageUrl = imageUrl
         },
         async sendRequest() {

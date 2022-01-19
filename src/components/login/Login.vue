@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="col-md-5 float-right" v-if="!address">
+        <div class="col-md-12 float-right" v-if="!address">
             <div class="cnt-btn-wallet"><a href="javascript:void (0)" @click="connectWallet()">CONNECT WALLET</a></div>
         </div>
         <div class="row" v-if="address">
