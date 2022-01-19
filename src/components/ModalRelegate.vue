@@ -77,10 +77,6 @@ export default {
             srcValidatorAddress: '',
             dstImageUrl: '',
             srcImageUrl: '',
-            amount: {
-                denom: process.env.VUE_APP_DENOM,
-                amount: this.token
-            },
             titleStakedValidator: 'Select validator from',
             titleValidator: 'Select validator to',
             dstRef: {
@@ -150,7 +146,7 @@ export default {
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
-                await keplrWallet.redelegateTokens(delegatorAddress, this.srcValidatorAddress, this.dstValidatorAddress, this.amount)
+                await keplrWallet.redelegateTokens(delegatorAddress, this.srcValidatorAddress, this.dstValidatorAddress, this.token)
                 this.$toast.success("Redelegate success");
             } catch (err) {
                 this.$toast.error(err.message);

@@ -1,5 +1,5 @@
 import {
-    SigningStargateClient, assertIsBroadcastTxSuccess, coins
+    SigningStargateClient, assertIsBroadcastTxSuccess, coins, coin
 } from "@cosmjs/stargate";
 const chainId = process.env.VUE_APP_CHAIN_ID;
 const coinDenom = process.env.VUE_APP_DENOM;
@@ -97,6 +97,10 @@ export class KelprWallet {
         };
     }
 
+    getCoin(amount) {
+        return coin(amount * 10**6, coinMinimalDenom)
+    }
+
     static setAddress(address) {
         return localStorage.setItem("address", address);
     }
@@ -111,13 +115,13 @@ export class KelprWallet {
 
     async delegateTokens(delegatorAddress, validatorAddress, amount, memo = "") {
         const fee = this.getFee()
-        const result =  this.getClient().delegateTokens(delegatorAddress, validatorAddress, amount, fee, memo)
+        const result =  this.getClient().delegateTokens(delegatorAddress, validatorAddress, this.getCoin(amount), fee, memo)
         assertIsBroadcastTxSuccess(result);
     }
 
     async unDelegateTokens(delegatorAddress, validatorAddress, amount, memo = "") {
         const fee = this.getFee()
-        const result =  await this.getClient().undelegateTokens(delegatorAddress, validatorAddress, amount, fee, memo)
+        const result =  await this.getClient().undelegateTokens(delegatorAddress, validatorAddress, this.getCoin(amount), fee, memo)
         assertIsBroadcastTxSuccess(result);
     }
 
@@ -126,7 +130,7 @@ export class KelprWallet {
             delegatorAddress: delegatorAddress,
             validatorSrcAddress: srcValidatorAddress,
             validatorDstAddress: dstValidatorAddress,
-            amount: amount
+            amount: this.getCoin(amount)
         };
         const msgAny = {
             typeUrl: "/cosmos.staking.v1beta1.MsgBeginRedelegate",

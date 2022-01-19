@@ -313,9 +313,7 @@ export default {
         await this.getProposals()
         this.$store.subscribe(mutation => {
             if (mutation.type === 'auth/setAddress') {
-                this.getRewards()
-                this.getBalances()
-                this.getDelegation()
+                this.getData()
             }
         })
     },
@@ -329,6 +327,11 @@ export default {
                 return 'active'
             }
             return ''
+        },
+        getData() {
+            this.getRewards()
+            this.getBalances()
+            this.getDelegation()
         },
         showModal(title, refName, proposalId, index) {
             if (this.address == '' && proposalId == '') {

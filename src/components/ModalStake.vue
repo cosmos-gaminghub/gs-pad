@@ -47,8 +47,6 @@
 
 <script>
 import ValidatorImage from "./validator/ValidatorImage";
-
-const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
@@ -59,10 +57,6 @@ export default {
             dropdown: false,
             style: 'none',
             addressDelegator: '',
-            amount: {
-                denom: DENOM,
-                amount: this.token
-            },
             error: '',
             formInvalid: {
                 borderColor: ''
@@ -106,7 +100,7 @@ export default {
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
-                await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.amount)
+                await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.token)
                 this.$toast.success("Stake success");
             } catch (err) {
                 this.$toast.error(err.message);

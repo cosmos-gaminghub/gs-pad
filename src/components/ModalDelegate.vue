@@ -39,8 +39,6 @@
 </template>
 <script>
 import ValidatorImage from "./validator/ValidatorImage";
-
-const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
@@ -53,10 +51,6 @@ export default {
             addressDelegator: '',
             token: '',
             title: 'Select validator',
-            amount: {
-                denom: DENOM,
-                amount: this.token
-            },
             error: '',
             formInvalid: {
                 borderColor: ''
@@ -75,6 +69,15 @@ export default {
                 return true
             }
             return false
+        }
+    },
+    watch: {
+        "titleDelegate": function (value) {
+            this.validators.forEach(item => {
+                if(item.description.moniker == value) {
+                    this.addressDelegator = item.operatorAddress
+                }
+            })
         }
     },
     methods: {
@@ -98,7 +101,7 @@ export default {
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
-                await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.amount)
+                await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.token)
                 this.$toast.success('Stake success');
             } catch (err) {
                 this.$toast.error(err.message);
