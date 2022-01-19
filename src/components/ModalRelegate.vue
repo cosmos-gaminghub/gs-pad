@@ -1,6 +1,6 @@
 <template>
     <div class="modal-body">
-        <div class="content-stake">
+        <div class="content-stake" ref="stakeModalBody">
             <div class="title-popup-stake">Redelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
@@ -143,15 +143,18 @@ export default {
             this[ref].dropdown = true
         },
         async sendData() {
+            const loader = this.showLoadling("stakeModalBody")
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
                 await keplrWallet.redelegateTokens(delegatorAddress, this.srcValidatorAddress, this.dstValidatorAddress, this.token)
                 this.$toast.success("Redelegate success");
+                this.$parent.closeModal('modalReDelegate','closeRelegate')
+                await this.$parent.getData();
             } catch (err) {
                 this.$toast.error(err.message);
             }
-
+            this.hideLoading(loader)
         },
         checkRequest() {
             if (Number(this.token) > Number(this.tokenStaked)) {
@@ -170,6 +173,17 @@ export default {
             this.formInvalid.borderColor = ''
             this.hideDropDown('srcRef')
             this.hideDropDown('dstRef')
+        },
+        showLoadling(refName) {
+            const loader = this.$loading.show({
+                container: this.$refs[refName],
+                canCancel: true,
+                onCancel: this.onCancel,
+            });
+            return loader
+        },
+        hideLoading(loader) {
+            loader.hide()
         },
     }
 }

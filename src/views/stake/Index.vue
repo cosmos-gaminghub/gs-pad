@@ -54,7 +54,7 @@
                                 @click="closeModal('modalDelegate','closeDelegate')">
                             <span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
-                    <ModalDelegate :validators="allValidators.validators" :coin="coin" :titleDelegate="titleDelegate" ref="closeDelegate"/>
+                    <ModalDelegate :validators="allValidators" :coin="coin" :titleDelegate="titleDelegate" ref="closeDelegate"/>
                 </div>
             </div>
         </div>
@@ -89,12 +89,10 @@ export default {
     },
     async mounted() {
         await this.getWallet()
-        await this.getAllValidators()
-        await this.stakeds()
-        await this.getBalances()
+        await this.getData()
         this.$store.subscribe(mutation => {
             if (mutation.type === 'auth/setAddress') {
-                this.stakeds()
+                this.getData()
             }
         })
     },
@@ -111,6 +109,12 @@ export default {
                 return 'active'
             }
             return ''
+        },
+        async getData() {
+            await this.getAllValidators()
+            await this.stakeds()
+            await this.getUnbonding()
+            await this.getBalances()
         },
         async getWallet() {
             try {
@@ -162,7 +166,7 @@ export default {
                 // await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
-        async unbonding() {
+        async getUnbonding() {
             if (this.address) {
                 const response = await this.wallet.getUnbonding(this.address)
                 this.unbondings = response.unbondingResponses

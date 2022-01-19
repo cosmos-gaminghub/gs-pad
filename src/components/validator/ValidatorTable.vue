@@ -155,13 +155,15 @@ export default {
             let balance = 0;
             this.unbondings.forEach(item => {
                 if (item.validatorAddress === validatorAddress) {
-                    balance = item.entries.reduce((a, b) => parseInt(a.balance) + parseInt(b.balance), 0)
+                    item.entries.forEach(entry => {
+                        balance += parseInt(entry.balance)
+                    })
                 }
             })
             if(balance == 0) {
                 return "No tokens"
             }
-            return balance
+            return balance / 10**6
         }
     }
 }

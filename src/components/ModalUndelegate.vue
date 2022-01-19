@@ -1,6 +1,6 @@
 <template>
     <div class="modal-body">
-        <div class="content-stake">
+        <div class="content-stake" ref="undelegateModalBody">
             <div class="title-popup-stake">Undelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
@@ -42,7 +42,6 @@
 
 <script>
 import ValidatorImage from "./validator/ValidatorImage";
-const DEMON = process.env.VUE_APP_DENOM
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
@@ -55,10 +54,6 @@ export default {
             token: '',
             tokenStaked: 0,
             addressDelegator: '',
-            amount: {
-                demon: DEMON,
-                amount: this.token
-            },
             title: 'Select validator',
             error: '',
             formInvalid: {
@@ -73,7 +68,6 @@ export default {
     },
     computed: {
         clickSubmit() {
-
             if (this.error || this.title == 'Select validator' || this.token == '') {
                 return true
             }
@@ -98,7 +92,7 @@ export default {
             this.addressDelegator = address
             this.delegate.forEach(item => {
                 if (item.delegation.validatorAddress === address) {
-                    this.tokenStaked = Number(item.balance.amount) / 10 ** 8
+                    this.tokenStaked = Number(item.balance.amount) / 10 ** 6
                 }
             })
             this.dropdown = false
@@ -106,14 +100,18 @@ export default {
             this.imageUrl = imageUrl
         },
         async sendRequest() {
+            const loader = this.showLoadling("undelegateModalBody")
             try {
                 const delegatorAddress = await KelprWallet.getAddress()
                 const kelprWallet = await KelprWallet.getKeplrWallet()
-                await kelprWallet.unDelegateTokens(delegatorAddress, this.addressDelegator, this.amount)
+                await kelprWallet.unDelegateTokens(delegatorAddress, this.addressDelegator, this.token)
                 this.$toast.success("Undelegate success");
+                this.$parent.closeModal('modalUnDelegate','closeUnDelegate')
+                await this.$parent.getData();
             } catch (err) {
                 this.$toast.error(err.message);
             }
+            loader.hide()
         },
         checkRequest() {
             if (Number(this.token) > Number(this.tokenStaked)) {
@@ -132,7 +130,17 @@ export default {
             this.dropdown = false
             this.style = 'none'
         },
-
+        showLoadling(refName) {
+            const loader = this.$loading.show({
+                container: this.$refs[refName],
+                canCancel: true,
+                onCancel: this.onCancel,
+            });
+            return loader
+        },
+        hideLoading(loader) {
+            loader.hide()
+        },
     }
 }
 </script>

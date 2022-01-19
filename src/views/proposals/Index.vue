@@ -33,7 +33,7 @@
                                                     <li v-for="(proposal,index) in proposals" :key="index">
                                                         <ItemProposalsTab
                                                             :proposer="proposal.proposer"
-                                                            :index="index"
+                                                            :index="proposal.proposalId.low"
                                                             :status="proposal.status"
                                                             :submitTime="proposal.submitTime"
                                                             :votingStartTime="proposal.votingStartTime"
@@ -55,7 +55,7 @@
                                                     <li v-for="(proposal,index) in proposalsForStatus" :key="index">
                                                         <ItemProposalsTab
                                                             :proposer="proposal.proposer"
-                                                            :index="index"
+                                                            :index="proposal.proposalId.low"
                                                             :status="proposal.status"
                                                             :submitTime="proposal.submitTime"
                                                             :votingStartTime="proposal.votingStartTime"
@@ -77,7 +77,7 @@
                                                     <li v-for="(proposal,index) in proposalsForStatus" :key="index">
                                                         <ItemProposalsTab
                                                             :proposer="proposal.proposer"
-                                                            :index="index"
+                                                            :index="proposal.proposalId.low"
                                                             :status="proposal.status"
                                                             :submitTime="proposal.submitTime"
                                                             :votingStartTime="proposal.votingStartTime"
@@ -99,7 +99,7 @@
                                                     <li v-for="(proposal,index) in proposalsForStatus" :key="index">
                                                         <ItemProposalsTab
                                                             :proposer="proposal.proposer"
-                                                            :index="index"
+                                                            :index="proposal.proposalId.low"
                                                             :status="proposal.status"
                                                             :submitTime="proposal.submitTime"
                                                             :votingStartTime="proposal.votingStartTime"
@@ -253,6 +253,7 @@ export default {
             try {
                 const res = await this.wallet.getListProposal(this.statusProposal.UNRECOGNIZED, "", "")
                 this.proposals = res.proposals
+                this.sort()
                 this.formatProposals()
                 await this.getProposalProposer(0)
             } catch (err) {
@@ -356,6 +357,11 @@ export default {
                 this.check = false
             }
 
+        },
+        sort() {
+            this.proposals.sort(function (a, b) {
+                return b.proposalId.low - a.proposalId.low;
+            });
         }
     }
 }

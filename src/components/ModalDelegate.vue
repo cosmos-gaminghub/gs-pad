@@ -1,12 +1,12 @@
 <template>
     <div class="modal-body">
-        <div class="content-stake">
+        <div class="content-stake" ref="delegateModalBody">
             <div class="title-popup-stake">Delegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
                     <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
                                              href="#" @click="clickDropdown()">
-                        <ValidatorImage :imageUrl="imageUrl" />
+                        <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
                         {{ titleDelegate }}<i
                         class="fa fa-angle-down"></i></a>
                         <ul class="js-dropdown-list" :style="{display: style}">
@@ -55,7 +55,7 @@ export default {
             formInvalid: {
                 borderColor: ''
             },
-            imageUrl: 'https://s3.amazonaws.com/keybase_processed_uploads/ee492dacfab4015625e68c3e0f1da505_360_360.jpg'
+            imageUrl: ''
         }
     },
     props: {
@@ -76,6 +76,7 @@ export default {
             this.validators.forEach(item => {
                 if(item.description.moniker == value) {
                     this.addressDelegator = item.operatorAddress
+                    this.imageUrl = item.imageUrl
                 }
             })
         }
@@ -98,17 +99,21 @@ export default {
             this.imageUrl = imageUrl
         },
         async sendRequest() {
+            const loader = this.showLoadling("delegateModalBody")
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
                 await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.token)
-                this.$toast.success('Stake success');
+                this.$toast.success('Delegate success')
+                this.$parent.closeModal('modalDelegate','closeDelegate')
+                await this.$parent.getData();
             } catch (err) {
                 this.$toast.error(err.message);
             }
+            this.hideLoading(loader)
         },
         maxAvailable() {
-            this.token = this.coin
+            this.token = Number(this.coin) / 10 ** 6
         },
         checkRequest() {
             if (Number(this.token) > Number(this.coin)) {
@@ -125,6 +130,17 @@ export default {
             this.formInvalid.borderColor = ''
             this.dropdown = false
             this.style = 'none'
+        },
+        showLoadling(refName) {
+            const loader = this.$loading.show({
+                container: this.$refs[refName],
+                canCancel: true,
+                onCancel: this.onCancel,
+            });
+            return loader
+        },
+        hideLoading(loader) {
+            loader.hide()
         },
     }
 }

@@ -54,11 +54,11 @@ export class KelprWallet {
                             },
                         ],
                         gasPriceStep: {
-                            low: 0.1,
-                            average: 0.25,
-                            high: 0.4,
+                            low: 0.005,
+                            average: 0.025,
+                            high: 0.08,
                         },
-                        features: ['secretwasm'],
+                        features: ['stargate', 'ibc-transfer'],
                     });
                     await window.keplr.enable(chainId);
 
@@ -93,7 +93,7 @@ export class KelprWallet {
     getFee() {
         return {
             amount: coins(0, coinMinimalDenom),
-            gas: "100000",
+            gas: "200000",
         };
     }
 
@@ -115,7 +115,7 @@ export class KelprWallet {
 
     async delegateTokens(delegatorAddress, validatorAddress, amount, memo = "") {
         const fee = this.getFee()
-        const result =  this.getClient().delegateTokens(delegatorAddress, validatorAddress, this.getCoin(amount), fee, memo)
+        const result = await this.getClient().delegateTokens(delegatorAddress, validatorAddress, this.getCoin(amount), fee, memo)
         assertIsBroadcastTxSuccess(result);
     }
 

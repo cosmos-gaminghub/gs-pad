@@ -37,7 +37,8 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-vote" @click="sendRequest"
-                            :disabled="clickSubmit">STAKE
+                            :disabled="clickSubmit">
+                            STAKE
                     </button>
                 </div>
             </div>
@@ -97,6 +98,7 @@ export default {
             this.imageUrl = imageUrl
         },
         async sendRequest() {
+            const loader = this.showLoadling("stakeButton")
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
@@ -105,9 +107,10 @@ export default {
             } catch (err) {
                 this.$toast.error(err.message);
             }
+            loader.hide()
         },
         maxAvailable() {
-            this.token = this.coin
+            this.token = Number(this.coin) / 10 ** 6
         },
         checkRequest() {
             if (Number(this.token) > Number(this.coin)) {
@@ -126,7 +129,17 @@ export default {
             this.dropdown = false
             this.style = 'none'
         },
-
+        showLoadling(refName) {
+            const loader = this.$loading.show({
+                container: this.$refs[refName],
+                canCancel: true,
+                onCancel: this.onCancel,
+            });
+            return loader
+        },
+        hideLoading(loader) {
+            loader.hide()
+        },
     }
 }
 </script>

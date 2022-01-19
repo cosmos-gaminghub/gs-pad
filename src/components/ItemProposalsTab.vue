@@ -3,7 +3,7 @@
         <li>
             <div class="item-proposal-detail">
                 <ProposalHeader
-                    :id="index + 1"
+                    :id="index"
                     :status="status"
                     :title="des.typeUrl"
                 />
