@@ -1,4 +1,6 @@
-# Wallet browser
+# GAME GS Pad ( Governance & Staking )
+
+GAME GS Pad is user-friendly web interface to interact with [CosmosSDK](https://github.com/cosmos/cosmos-sdk) based Blockchain(ex [gaia](https://github.com/cosmos/gaia)).
 
 ## Project setup
 ```
