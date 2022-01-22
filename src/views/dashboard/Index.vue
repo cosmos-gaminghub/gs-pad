@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <div class="status-items">
-                            <div class="title">Unstaked Tokens</div>
+                            <div class="title">Unbonding Tokens</div>
                             <div class="number">0</div>
                         </div>
                     </div>
