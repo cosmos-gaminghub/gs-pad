@@ -28,7 +28,7 @@
                     <div class="text-max" @click="maxToken()"><a href="#" style="color: #00B6ED">Max</a></div>
                 </div>
                 <div class="form-group">
-                    <div class="text-form"><span class="text">Max Available tokens:</span><span
+                    <div class="text-form"><span class="text">Max Available tokens: </span><span
                         class="number">{{ tokenStaked }}</span>
                     </div>
                 </div>

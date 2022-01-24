@@ -21,7 +21,7 @@
                                 @click="showModal('', 'modalReDelegate','','')">REDELEGATE</a>
                             </div>
                         </div>
-                        <div class="status-items">
+                        <div class="status-items" ref="claimBox">
                             <div class="title">Rewards</div>
                             <div class="number">{{ reward.toFixed(1) }}</div>
                             <div class="list-link"><a :class="reward===0?'disable':''" href="javascript:void(0)"
@@ -30,7 +30,7 @@
                         </div>
                         <div class="status-items">
                             <div class="title">Unbonding Tokens</div>
-                            <div class="number">0</div>
+                            <div class="number">{{ unbondingToken }}</div>
                         </div>
                     </div>
                 </div>
@@ -299,7 +299,16 @@ export default {
         allValidators() {
             const validators = [...this.validators]
             return validators.splice(0, 10)
-        }
+        },
+        unbondingToken() {
+            let balance = 0;
+            this.unbondings.forEach(item => {
+                item.entries.forEach(entry => {
+                    balance += parseInt(entry.balance)
+                })
+            })
+            return balance / 10**6
+        },
     },
     async mounted() {
         await this.getWallet()
@@ -483,17 +492,18 @@ export default {
             }
         },
         async claim() {
+            const loader = this.showLoadling("claimBox")
             try {
                 const kelprWallet = await KelprWallet.getKeplrWallet()
                 const address = await KelprWallet.getAddress()
                 for await (const data of this.listReward) {
                     await kelprWallet.claimRewards(address, data.validatorAddress)
                 }
+                this.$toast.success("Claim success")
             } catch (err) {
                 this.$toast.error(err.message);
             }
-
-
+            this.hideLoading(loader)
         },
         showLoadling(refName) {
             const loader = this.$loading.show({

@@ -112,6 +112,7 @@ export default {
         },
         async getData() {
             await this.getAllValidators()
+            await this.getValidatorImage(0, this.allValidators, "allValidators")
             await this.stakeds()
             await this.getUnbonding()
             await this.getBalances()
@@ -123,16 +124,27 @@ export default {
                 this.$toast.error(err.message);
             }
         },
-        async getAllValidators() {
-            const loader = this.showLoadling("validatorTable")
+        async getAllValidators(paginationKey = [], showLoadling = true) {
+            let loader = null
+            if(showLoadling) {
+                loader = this.showLoadling("validatorTable")
+            }
+            
             try {
-                const res = await this.wallet.getValidators("BOND_STATUS_BONDED")
-                this.allValidators = res.validators
-                await this.getValidatorImage(0, this.allValidators, "allValidators")
+                await this.wallet.getValidators("BOND_STATUS_BONDED", paginationKey).then(res => {
+                    this.allValidators = this.allValidators.concat(res.validators)
+                    if(this.allValidators.length < res.pagination.total.low) {
+                        this.getAllValidators(res.pagination.nextKey, false)
+                    }
+                })
+                // await this.getValidatorImage(0, this.validators, "allValidators")
             } catch (err) {
                 this.$toast.error(err.message)
             }
-            this.hideLoading(loader)
+
+            if(showLoadling){
+                this.hideLoading(loader)
+            }
         },
         async getValidatorImage(index, validators, property) {
             const array = [];

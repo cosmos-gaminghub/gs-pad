@@ -12,14 +12,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(validator,index) in validators"
+            <tr v-for="(validator,index) in validatorInTable"
                 :key="index">
                 <td>
                     <div class="td-acount">
                         <div class="icon">
                             <img :src="validator.imageUrl" style="max-width: 100%;height: auto">
                         </div>
-                        <span>{{ validator | getMoniker }}</span>
+                        <a :href="validator | getLink" target="_blank">{{ validator | getMoniker }}</a>
                     </div>
                 </td>
                 <td><span class="status"
@@ -27,7 +27,7 @@
                 </td>
                 <td>{{ validator | getTokens }}</td>
                 <td>{{ validator | getRate }}</td>
-                <td>{{ getUnbondingBalance(validator.operatorAddress) }}</td>
+                <td>{{ validator.token_staked }}</td>
                 <td><a href="javascript:void(0)" @click="delegate(validator.description.moniker)">DELEGATE</a></td>
             </tr>
             <ValidatorNoData :validators="validators" :isStake="isStake" @connectSuccess="connectSuccess"/>
@@ -79,8 +79,8 @@ export default {
                     sortable: false,
                 },
             ],
-            sort_type: "",
-            sort_field: "",
+            sort_type: "desc",
+            sort_field: "tokens",
         }
     },
     filters: {
@@ -92,8 +92,8 @@ export default {
         },
         getTokens(validator) {
             if (validator.tokens) {
-                let a = (validator.tokens / 10 ** 6).toFixed(1)
-                return new Intl.NumberFormat().format(a) + '0'
+                let a = (validator.tokens / 10 ** 6).toFixed(2)
+                return new Intl.NumberFormat().format(a)
             }
         },
         getRate(validator) {
@@ -101,6 +101,32 @@ export default {
                 return ((validator.commission.commissionRates.rate) / 10 ** 18 * 100).toFixed(2) +'%'
             }
         },
+        getLink(validator) {
+            const explorerUrl = process.env.VUE_APP_EXPLORER_URL
+            return `${explorerUrl}/validators/${validator.operatorAddress}`
+        },
+    },
+    computed: {
+        validatorInTable(){
+            let array = []
+            for(const index in this.validators) {
+                let item =  this.validators[index]
+                item.token_staked = this.getUnbondingBalance(item.operatorAddress)
+                array.push(item)
+            }
+            array.sort(function (a, b) {
+                let aValue = a.token_staked
+                let bValue = b.token_staked
+                if(bValue == "No tokens") {
+                    bValue = 0
+                }
+                if(aValue == "No tokens") {
+                    aValue = 0
+                }
+                return bValue - aValue;
+            });
+            return array
+        }
     },
     methods: {
         delegate(moniker) {
@@ -126,7 +152,7 @@ export default {
         sort () {
             const sortField = this.sort_field
             if(this.sort_type == 'asc'){ 
-                this.validators.sort(function (a, b) {
+                this.validatorInTable.sort(function (a, b) {
                     if(sortField == "commission.commissionRates.rate") {
                         return a.commission.commissionRates.rate - b.commission.commissionRates.rate;
                     } else if(sortField == "description.moniker") {
@@ -135,7 +161,7 @@ export default {
                     return a[sortField] - b[sortField];
                 });
             } else {
-                this.validators.sort(function (a, b) {
+                this.validatorInTable.sort(function (a, b) {
                     if(sortField == "commission.commissionRates.rate") {
                         return b.commission.commissionRates.rate - a.commission.commissionRates.rate;
                     } else if(sortField == "description.moniker") {
