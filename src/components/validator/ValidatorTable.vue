@@ -19,7 +19,7 @@
                         <div class="icon">
                             <img :src="validator.imageUrl" style="max-width: 100%;height: auto">
                         </div>
-                        <a :href="validator | getLink" target="_blank">{{ validator | getMoniker }}</a>
+                        <a :href="validator | getValidatorLink" target="_blank">{{ validator | getMoniker }}</a>
                     </div>
                 </td>
                 <td><span class="status"
@@ -36,7 +36,6 @@
 </template>
 <script>
 import ValidatorNoData from "@/components/validator/ValidatorNoData.vue"
-import { Bech32 } from "@cosmjs/encoding"
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 export default {
     components: {
@@ -103,11 +102,9 @@ export default {
                 return ((validator.commission.commissionRates.rate) / 10 ** 18 * 100).toFixed(2) +'%'
             }
         },
-        getLink(validator) {
+        getValidatorLink(validator) {
             const explorerUrl = process.env.VUE_APP_EXPLORER_URL
-            const { data } = Bech32.decode(validator.operatorAddress)
-            const bech32Address = Bech32.encode('game', data)
-            return `${explorerUrl}/account/${bech32Address}`
+            return `${explorerUrl}/validators/${validator.operatorAddress}`
         },
     },
     computed: {

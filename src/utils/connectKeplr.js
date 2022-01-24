@@ -93,7 +93,7 @@ export class KelprWallet {
     getFee(multiplyValue = 1) {
         return {
             amount: coins(0, coinMinimalDenom),
-            gas: 200000 * multiplyValue,
+            gas: (200000 * multiplyValue).toString(),
         };
     }
 
@@ -155,6 +155,7 @@ export class KelprWallet {
         };
 
         const fee = this.getFee()
+        
         const memo = "Voting";
         const result = await this.getClient().signAndBroadcast(voter, [msgAny], fee, memo);
         assertIsBroadcastTxSuccess(result);
