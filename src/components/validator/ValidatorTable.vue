@@ -36,6 +36,7 @@
 </template>
 <script>
 import ValidatorNoData from "@/components/validator/ValidatorNoData.vue"
+import { Bech32 } from "@cosmjs/encoding"
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 export default {
     components: {
@@ -80,8 +81,8 @@ export default {
                     sortable: false,
                 },
             ],
-            sort_type: "desc",
-            sort_field: "tokens",
+            sort_type: "",
+            sort_field: "",
         }
     },
     filters: {
@@ -104,7 +105,9 @@ export default {
         },
         getLink(validator) {
             const explorerUrl = process.env.VUE_APP_EXPLORER_URL
-            return `${explorerUrl}/validators/${validator.operatorAddress}`
+            const { data } = Bech32.decode(validator.operatorAddress)
+            const bech32Address = Bech32.encode('game', data)
+            return `${explorerUrl}/account/${bech32Address}`
         },
     },
     computed: {
@@ -189,7 +192,7 @@ export default {
                 return "No tokens"
             }
             return balance / 10**6
-        }
+        },
     }
 }
 </script>
