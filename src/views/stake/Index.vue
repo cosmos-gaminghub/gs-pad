@@ -24,7 +24,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive" ref="validatorTable">
-                                                <ValidatorTable :unbondings="unbondings" :validators="allValidators" @showModal="showModal" :isStake="false"/>
+                                                <ValidatorTable :delegations="delegations" :validators="allValidators" @showModal="showModal" :isStake="false"/>
                                             </div>
                                         </div>
                                     </div>
@@ -34,7 +34,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive">
-                                                <ValidatorTable :unbondings="unbondings" :validators="stakedValidators" @showModal="showModal" :isStake="true"/>
+                                                <ValidatorTable :delegations="delegations" :validators="stakedValidators" @showModal="showModal" :isStake="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@ export default {
     data: function () {
         return {
             allValidators: [],
-            unbondings: [],
+            delegations: [],
             activeTab: "allValidators",
             stakedValidators: [],
             wallet: '',
@@ -112,8 +112,9 @@ export default {
         },
         async getData() {
             await this.getAllValidators()
+            await this.getValidatorImage(0, this.allValidators, "allValidators")
             await this.stakeds()
-            await this.getUnbonding()
+            await this.getDelegation()
             await this.getBalances()
         },
         async getWallet() {
@@ -123,16 +124,26 @@ export default {
                 this.$toast.error(err.message);
             }
         },
-        async getAllValidators() {
-            const loader = this.showLoadling("validatorTable")
+        async getAllValidators(paginationKey = [], showLoadling = true) {
+            let loader = null
+            if(showLoadling) {
+                loader = this.showLoadling("validatorTable")
+            }
+            
             try {
-                const res = await this.wallet.getValidators("BOND_STATUS_BONDED")
-                this.allValidators = res.validators
-                await this.getValidatorImage(0, this.allValidators, "allValidators")
+                await this.wallet.getValidators("BOND_STATUS_BONDED", paginationKey).then(res => {
+                    this.allValidators = this.allValidators.concat(res.validators)
+                    if(this.allValidators.length < res.pagination.total.low) {
+                        this.getAllValidators(res.pagination.nextKey, false)
+                    }
+                })
             } catch (err) {
                 this.$toast.error(err.message)
             }
-            this.hideLoading(loader)
+
+            if(showLoadling){
+                this.hideLoading(loader)
+            }
         },
         async getValidatorImage(index, validators, property) {
             const array = [];
@@ -166,10 +177,10 @@ export default {
                 // await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
-        async getUnbonding() {
+        async getDelegation() {
             if (this.address) {
-                const response = await this.wallet.getUnbonding(this.address)
-                this.unbondings = response.unbondingResponses
+                const response = await this.wallet.getDelegation(this.address)
+                this.delegations = response.delegationResponses
             }
         },
         showModal(title, refName) {

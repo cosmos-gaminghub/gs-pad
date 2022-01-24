@@ -9,8 +9,7 @@
                     <div class="name-acount">
                         <div class="name"></div>
                         <div class="cnt-link-copy">
-                            <div class="link">{{ address }}</div>
-                            
+                            <div class="link"><a :href="address | getAccountLink">{{ address }}</a></div>
                         </div>
                         <div class="button-link-logout">
                             <button class="btn btn-copy" @click="doCopy">Copy</button>
@@ -33,6 +32,12 @@ import {mapState, mapMutations} from "vuex";
 export default {
     name: "Login",
     computed: {...mapState("auth", ["address"])},
+    filters: {
+        getAccountLink(value) {
+            const explorerUrl = process.env.VUE_APP_EXPLORER_URL
+            return `${explorerUrl}/account/${value}`
+        }
+    },
     mounted() {
         this.getData()
     },

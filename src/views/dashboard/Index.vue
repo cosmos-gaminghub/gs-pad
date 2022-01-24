@@ -21,7 +21,7 @@
                                 @click="showModal('', 'modalReDelegate','','')">REDELEGATE</a>
                             </div>
                         </div>
-                        <div class="status-items">
+                        <div class="status-items" ref="claimBox">
                             <div class="title">Rewards</div>
                             <div class="number">{{ reward.toFixed(1) }}</div>
                             <div class="list-link"><a :class="reward===0?'disable':''" href="javascript:void(0)"
@@ -30,7 +30,7 @@
                         </div>
                         <div class="status-items">
                             <div class="title">Unbonding Tokens</div>
-                            <div class="number">0</div>
+                            <div class="number">{{ unbondingToken }}</div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                                 <ValidatorTable
                                                     :validators="allValidators"
                                                     :isStake="false"
-                                                    :unbondings="unbondings"
+                                                    :delegations="delegations"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -83,7 +83,7 @@
                                                 <ValidatorTable
                                                     :validators="stakedValidators"
                                                     :isStake="true"
-                                                    :unbondings="unbondings"
+                                                    :delegations="delegations"
                                                     @showModal="showModal"
                                                 />
                                             </div>
@@ -149,7 +149,7 @@
                                 @click="closeModal('modalUnDelegate','closeUnDelegate')">
                             <span aria-hidden="true"></span></button>
                     </div>
-                    <ModalUndelegate :stakedValidators="stakedValidators" :delegate="delegate"
+                    <ModalUndelegate :stakedValidators="stakedValidators" :delegate="delegations"
                                      ref="closeUnDelegate"/>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                             <span aria-hidden="true" class="icon-close-modal"></span></button>
                     </div>
                     <ModalRelegate :stakedValidators="stakedValidators" :validators="validators"
-                                   :delegate="delegate" ref="closeRelegate"/>
+                                   :delegate="delegations" ref="closeRelegate"/>
                 </div>
             </div>
         </div>
@@ -282,16 +282,15 @@ export default {
             wallet: '',
             availableTokens: 0,
             reward: 0,
-            stakedTokens: 0,
             proposals: [],
             validators: [],
             coin: '0',
-            delegate: [],
             titleDelegate: '',
             listReward: [],
             proposalDetail: [],
             i: 0,
             option: -1,
+            delegations: [],
         }
     },
     computed: {
@@ -299,6 +298,24 @@ export default {
         allValidators() {
             const validators = [...this.validators]
             return validators.splice(0, 10)
+        },
+        unbondingToken() {
+            let balance = 0;
+            this.unbondings.forEach(item => {
+                item.entries.forEach(entry => {
+                    balance += parseInt(entry.balance)
+                })
+            })
+            return balance / 10**6
+        },
+        stakedTokens() {
+            let value = 0;
+            this.delegations.forEach(item => {
+                if (item.balance.denom === DENOM) {
+                    value += item.balance.amount / 10 ** 6
+                }
+            })
+            return value
         }
     },
     async mounted() {
@@ -465,14 +482,8 @@ export default {
         },
         async getDelegation() {
             if (this.address) {
-                this.stakedTokens = 0
-                const delegation = await this.wallet.getDelegation(this.address)
-                delegation.delegationResponses.forEach(item => {
-                    if (item.balance.denom === DENOM) {
-                        this.delegate.push(item)
-                        this.stakedTokens += item.balance.amount / 10 ** 6
-                    }
-                })
+                const response = await this.wallet.getDelegation(this.address)
+                this.delegations = response.delegationResponses
             }
         },
         async stakeds() {
@@ -483,17 +494,18 @@ export default {
             }
         },
         async claim() {
+            const loader = this.showLoadling("claimBox")
             try {
                 const kelprWallet = await KelprWallet.getKeplrWallet()
                 const address = await KelprWallet.getAddress()
                 for await (const data of this.listReward) {
                     await kelprWallet.claimRewards(address, data.validatorAddress)
                 }
+                this.$toast.success("Claim success")
             } catch (err) {
                 this.$toast.error(err.message);
             }
-
-
+            this.hideLoading(loader)
         },
         showLoadling(refName) {
             const loader = this.$loading.show({

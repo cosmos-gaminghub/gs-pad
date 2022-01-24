@@ -46,7 +46,7 @@
                     <div class="text-max" @click="maxToken">Max</div>
                 </div>
                 <div class="form-group">
-                    <div class="text-form"><span class="text">Max Available tokens:</span><span
+                    <div class="text-form"><span class="text">Max Available tokens: </span><span
                         class="number">{{ Number(tokenStaked) }}</span>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ export default {
             this.srcImageUrl = imageUrl
             this.delegate.forEach(item => {
                 if (item.delegation.validatorAddress === address) {
-                    this.tokenStaked = Number(item.balance.amount) / 10 ** 8
+                    this.tokenStaked = Number(item.balance.amount) / 10 ** 6
                 }
             })
             this.hideDropDown(ref)

@@ -32,7 +32,7 @@
                     <div class="text-max" @click="maxAvailable">Max</div>
                 </div>
                 <div class="form-group">
-                    <div class="text-form"><span class="text">Max Available tokens:</span><span
+                    <div class="text-form"><span class="text">Max Available tokens: </span><span
                         class="number">{{ Number(coin) / 10 ** 6 }}</span></div>
                 </div>
                 <div class="form-group">

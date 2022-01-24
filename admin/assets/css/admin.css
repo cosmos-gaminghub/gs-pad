@@ -770,7 +770,6 @@ ul {
     align-items: center;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    justify-content: center;
 }
 
 .page-content .content-wallet .cnt-validator .table-bordered > tbody > tr > td .td-acount .icon {

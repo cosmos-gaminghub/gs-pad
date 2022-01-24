@@ -55,8 +55,8 @@ export class WalletHelper {
         return await this.getGovExtension().gov.proposal(proposalId)
     }
 
-    async getValidators(status) {
-        return await this.getStakingExtension().staking.validators(status)
+    async getValidators(status, paginationKey = []) {
+        return await this.getStakingExtension().staking.validators(status, paginationKey)
     }
 
     async reDelegations(addressStaked, address_user, addressDelegate) {
