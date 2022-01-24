@@ -24,7 +24,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive" ref="validatorTable">
-                                                <ValidatorTable :unbondings="unbondings" :validators="allValidators" @showModal="showModal" :isStake="false"/>
+                                                <ValidatorTable :delegations="delegations" :validators="allValidators" @showModal="showModal" :isStake="false"/>
                                             </div>
                                         </div>
                                     </div>
@@ -34,7 +34,7 @@
                                     <div class="content-detail">
                                         <div class="cos-table-list">
                                             <div class="table-responsive">
-                                                <ValidatorTable :unbondings="unbondings" :validators="stakedValidators" @showModal="showModal" :isStake="true"/>
+                                                <ValidatorTable :delegations="delegations" :validators="stakedValidators" @showModal="showModal" :isStake="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@ export default {
     data: function () {
         return {
             allValidators: [],
-            unbondings: [],
+            delegations: [],
             activeTab: "allValidators",
             stakedValidators: [],
             wallet: '',
@@ -114,7 +114,7 @@ export default {
             await this.getAllValidators()
             await this.getValidatorImage(0, this.allValidators, "allValidators")
             await this.stakeds()
-            await this.getUnbonding()
+            await this.getDelegation()
             await this.getBalances()
         },
         async getWallet() {
@@ -137,7 +137,6 @@ export default {
                         this.getAllValidators(res.pagination.nextKey, false)
                     }
                 })
-                // await this.getValidatorImage(0, this.validators, "allValidators")
             } catch (err) {
                 this.$toast.error(err.message)
             }
@@ -178,10 +177,10 @@ export default {
                 // await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
-        async getUnbonding() {
+        async getDelegation() {
             if (this.address) {
-                const response = await this.wallet.getUnbonding(this.address)
-                this.unbondings = response.unbondingResponses
+                const response = await this.wallet.getDelegation(this.address)
+                this.delegations = response.delegationResponses
             }
         },
         showModal(title, refName) {

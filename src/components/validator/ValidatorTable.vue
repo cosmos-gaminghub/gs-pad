@@ -36,13 +36,14 @@
 </template>
 <script>
 import ValidatorNoData from "@/components/validator/ValidatorNoData.vue"
+const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 export default {
     components: {
         ValidatorNoData,
     },
     props: {
         validators: Array,
-        unbondings: Array,
+        delegations: Array,
         isStake: Boolean
     },
     data () {
@@ -111,7 +112,7 @@ export default {
             let array = []
             for(const index in this.validators) {
                 let item =  this.validators[index]
-                item.token_staked = this.getUnbondingBalance(item.operatorAddress)
+                item.token_staked = this.getStakedToken(item.operatorAddress)
                 array.push(item)
             }
             array.sort(function (a, b) {
@@ -177,13 +178,11 @@ export default {
         setSortType(type){
             this.sort_type = type
         },
-        getUnbondingBalance(validatorAddress) {
+        getStakedToken(validatorAddress) {
             let balance = 0;
-            this.unbondings.forEach(item => {
-                if (item.validatorAddress === validatorAddress) {
-                    item.entries.forEach(entry => {
-                        balance += parseInt(entry.balance)
-                    })
+            this.delegations.forEach(item => {
+                if (item.delegation.validatorAddress === validatorAddress && item.balance.denom === DENOM) {
+                    balance += item.balance.amount
                 }
             })
             if(balance == 0) {
