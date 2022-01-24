@@ -90,10 +90,10 @@ export class KelprWallet {
         return this.client
     }
 
-    getFee() {
+    getFee(multiplyValue = 1) {
         return {
             amount: coins(0, coinMinimalDenom),
-            gas: "200000",
+            gas: 200000 * multiplyValue,
         };
     }
 
@@ -137,7 +137,7 @@ export class KelprWallet {
             value: msg,
         };
 
-        const fee = this.getFee()
+        const fee = this.getFee(1.3)
         const memo = "Redelegate";
         const result = await this.getClient().signAndBroadcast(delegatorAddress, [msgAny], fee, memo);
         assertIsBroadcastTxSuccess(result);
