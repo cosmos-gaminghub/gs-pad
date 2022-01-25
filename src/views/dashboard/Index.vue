@@ -512,6 +512,7 @@ export default {
                     await kelprWallet.claimRewards(address, data.validatorAddress)
                 }
                 this.$toast.success("Claim success")
+                await this.getRewards()
             } catch (err) {
                 this.$toast.error(err.message);
             }
