@@ -85,6 +85,14 @@ export default {
             wallet: '',
             titleDelegate: '',
             coin: '0',
+            isLoadingValidator: true
+        }
+    },
+    watch: {
+        isLoadingValidator: function(value) {
+            if(!value) {
+                this.getValidatorImage(0, this.allValidators, "allValidators")
+            }
         }
     },
     async mounted() {
@@ -112,7 +120,6 @@ export default {
         },
         async getData() {
             await this.getAllValidators()
-            await this.getValidatorImage(0, this.allValidators, "allValidators")
             await this.stakeds()
             await this.getDelegation()
             await this.getBalances()
@@ -133,8 +140,10 @@ export default {
             try {
                 await this.wallet.getValidators("BOND_STATUS_BONDED", paginationKey).then(res => {
                     this.allValidators = this.allValidators.concat(res.validators)
-                    if(this.allValidators.length < res.pagination.total.low) {
+                    if(res.validators.length == 100) {
                         this.getAllValidators(res.pagination.nextKey, false)
+                    } else {
+                        this.isLoadingValidator = false
                     }
                 })
             } catch (err) {
@@ -151,30 +160,26 @@ export default {
                 if (validators[index + i]) {
                     const value = validators[index + i];
                     if (value && value.description && value.description.identity) {
-                        array.push(this.getKeyBaseImage(value.description.identity));
+                        array.push(this.getKeyBaseImage(value.description.identity, property, index + i));
                     }
                 } else {
                     break;
                 }
             }
-            Promise.all(array).then((data) => {
-                data.forEach((item, i) => {
-                    this.$set(this[property][index + i], 'imageUrl', item)
-                })
+            Promise.all(array).then(() => {
                 if (index + 3 <= validators.length - 1) {
                     this.getValidatorImage(index + 3, validators, property);
                 }
             });
         },
-        async getKeyBaseImage (identity) {
+        async getKeyBaseImage (identity, property, index) {
             const response = await this.axios.get(`https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${identity}&fields=pictures`)
-            return response.data.them[0].pictures.primary.url
+            this.$set(this[property][index], 'imageUrl', response.data.them[0].pictures.primary.url)
         },
         async stakeds() {
             if(this.address){
                 const res = await this.wallet.getStakedValidators(this.address)
                 this.stakedValidators = res.validators
-                // await this.getValidatorImage(0, this.stakedValidators, "stakedValidators")
             }
         },
         async getDelegation() {
