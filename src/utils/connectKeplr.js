@@ -23,9 +23,9 @@ export class KelprWallet {
                         rpc: process.env.VUE_APP_END_POINT,
                         rest: process.env.VUE_APP_REST,
                         bip44: {
-                            coinType: 529,
+                            coinType: 118,
                         },
-                        coinType: 529,
+                        coinType: 118,
                         stakeCurrency: {
                             coinDenom: coinDenom,
                             coinMinimalDenom: coinMinimalDenom,
