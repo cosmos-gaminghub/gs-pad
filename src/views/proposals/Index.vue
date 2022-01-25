@@ -252,7 +252,13 @@ export default {
             const loader = this.showLoadling("proposalTable")
             try {
                 const res = await this.wallet.getListProposal(this.statusProposal.UNRECOGNIZED, "", "")
-                this.proposals = res.proposals
+                for(const index in res.proposals) {
+                    const proposal = res.proposals[index]
+                    const {tally} = await this.wallet.getProposalTally(proposal.proposalId)
+                    proposal.finalTallyResult = {...tally}
+                    this.proposals = this.proposals.concat(proposal)
+                }
+                console.log(this.proposals)
                 this.sort()
                 this.formatProposals()
                 await this.getProposalProposer(0)

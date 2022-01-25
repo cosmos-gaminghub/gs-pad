@@ -1,7 +1,7 @@
 <template>
     <div class="title-item-proposal">
         <div class="number-title">
-            <div class="number">{{ id }}</div>
+            <div class="number">#{{ id }}</div>
             <h3>{{ title }}</h3>
         </div>
         <div class="cnt-text"><a href="#">Status</a><a

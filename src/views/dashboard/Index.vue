@@ -193,7 +193,7 @@
                     <div class="modal-body" v-if="!isEmpty(proposalDetail)">
                         <div class="item-proposal-detail">
                             <ProposalHeader
-                                :id="i"
+                                :id="proposalDetail.proposalId.low"
                                 :status="proposalDetail.status"
                                 :title="proposalDetail.des.typeUrl"
                             />
@@ -436,7 +436,12 @@ export default {
             const loader = this.showLoadling("proposalTable")
             try {
                 const res = await this.wallet.getListProposal(ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD, '', '')
-                this.proposals = res.proposals
+                for(const index in res.proposals) {
+                    const proposal = res.proposals[index]
+                    const {tally} = await this.wallet.getProposalTally(proposal.proposalId)
+                    proposal.finalTallyResult = {...tally}
+                    this.proposals = this.proposals.concat(proposal)
+                }
                 this.sortProposal()
                 await this.formatProposals()
             } catch (err) {
@@ -507,6 +512,7 @@ export default {
                     await kelprWallet.claimRewards(address, data.validatorAddress)
                 }
                 this.$toast.success("Claim success")
+                await this.getRewards()
             } catch (err) {
                 this.$toast.error(err.message);
             }
