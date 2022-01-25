@@ -193,7 +193,7 @@
                     <div class="modal-body" v-if="!isEmpty(proposalDetail)">
                         <div class="item-proposal-detail">
                             <ProposalHeader
-                                :id="i"
+                                :id="proposalDetail.proposalId.low"
                                 :status="proposalDetail.status"
                                 :title="proposalDetail.des.typeUrl"
                             />

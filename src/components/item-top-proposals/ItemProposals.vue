@@ -2,7 +2,7 @@
     <a href="javascript:void(0)" @click="eventModal">
         <div class="item-vali-detail">
             <div class="title-item-vali">
-                <div class="number">{{ index + 1 }}</div>
+                <div class="number">{{ index }}</div>
                 <div class="cnt-text"><a href="#">Status</a><a
                     :style="{backgroundColor:style, color: textColor}" href="#">{{ name }}</a>
                 </div>
