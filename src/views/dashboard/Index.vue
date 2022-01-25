@@ -292,6 +292,14 @@ export default {
             i: 0,
             option: -1,
             delegations: [],
+            isLoadingValidator: true
+        }
+    },
+    watch: {
+        isLoadingValidator: function(value) {
+            if(!value) {
+                this.getValidatorImage(0, this.validators, "validators")
+            }
         }
     },
     computed: {
@@ -396,16 +404,28 @@ export default {
         async getStargetClient() {
             return await WalletHelper.getStargateClient()
         },
-        async getAllValidators() {
-            const loader = this.showLoadling("validatorTable")
-            try {
-                const data = await this.wallet.getValidators("BOND_STATUS_BONDED")
-                this.validators = [...data.validators]
-                await this.getValidatorImage(0, this.validators, "validators")
-            } catch (err) {
-                this.$toast.error(err.message);
+        async getAllValidators(paginationKey = [], showLoadling = true) {
+            let loader = null
+            if(showLoadling) {
+                loader = this.showLoadling("validatorTable")
             }
-            this.hideLoading(loader)
+            
+            try {
+                await this.wallet.getValidators("BOND_STATUS_BONDED", paginationKey).then(res => {
+                    this.validators = this.validators.concat(res.validators)
+                    if(res.validators.length == 100) {
+                        this.getAllValidators(res.pagination.nextKey, false)
+                    } else {
+                        this.isLoadingValidator = false
+                    }
+                })
+            } catch (err) {
+                this.$toast.error(err.message)
+            }
+
+            if(showLoadling){
+                this.hideLoading(loader)
+            }
         },
         async getValidatorImage(index, validators, property) {
             const array = [];
