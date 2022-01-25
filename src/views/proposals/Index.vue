@@ -266,13 +266,16 @@ export default {
                 const voter = await KelprWallet.getAddress()
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 await keplrWallet.vote(voter, proposalId, option)
+                this.closeModal()
                 this.$toast.success("Vote success");
             } catch (err) {
                 this.$toast.error(err.message);
             }
         },
         async handelVote() {
+            const loader = this.showLoadling("modal")
             await this.vote(this.proposalDetail.proposalId, this.option)
+            this.hideLoading(loader)
         },
         async getProposal(proposalId) {
             return await WalletHelper.getSumitProposer(this.stargateClient, proposalId)
