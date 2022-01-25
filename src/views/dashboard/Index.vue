@@ -219,6 +219,7 @@
                                         :abstain="proposalDetail.finalTallyResult.abstain"
                                     />
                                     <ProposalVoteInfo
+                                        :status="proposalDetail.status"
                                         :yes="proposalDetail.finalTallyResult.yes"
                                         :no="proposalDetail.finalTallyResult.no"
                                         :noWithVeto="proposalDetail.finalTallyResult.noWithVeto"
@@ -375,7 +376,11 @@ export default {
             if (refName == 'modalDelegate') {
                 this.titleDelegate = ''
             }
-            this.$refs[refCloseName].closeModal()
+
+            if(refCloseName) {
+                this.$refs[refCloseName].closeModal()
+            }
+            
             this.$refs[refName].classList.toggle("in")
             document.body.classList.toggle("modal-open")
             this.$refs[refName].style.display = "none"
@@ -519,13 +524,17 @@ export default {
             loader.hide()
         },
         async handelVote() {
+            const loader = this.showLoadling("modalProposal")
             await this.vote(this.proposalDetail.proposalId, this.option)
+            await this.getProposals()
+            this.hideLoading(loader)
         },
         async vote(proposalId, option) {
             try {
                 const voter = await KelprWallet.getAddress()
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 await keplrWallet.vote(voter, proposalId, option)
+                this.closeModal("modalProposal")
                 this.$toast.success("Vote success");
             } catch (err) {
                 this.$toast.error(err.message);

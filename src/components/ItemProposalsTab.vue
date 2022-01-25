@@ -32,6 +32,7 @@
                             :no="vote.no"
                             :abstain="vote.abstain"
                             :noWithVeto="vote.noWithVeto"
+                            :status="status"
                         />
                         <div class="cnt-vote" v-show="check">
                             <button class="btn btn-vote" >Vote</button>
@@ -82,7 +83,7 @@ export default {
         proposer: {
             type: String,
             default: ''
-        }
+        },
     },
     data: function () {
         return {
@@ -108,8 +109,7 @@ export default {
             if (this.status === ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD) {
                 this.check = true
             }
-
-        }
+        },
     }
 }
 </script>
