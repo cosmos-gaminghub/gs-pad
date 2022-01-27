@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown">
-        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
+        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="javascript:void(0)" @click="clickDropdown()">
             <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
             {{ title }}
             <i class="fa fa-angle-down"></i>
@@ -11,7 +11,7 @@
                     <input type="text" v-model="searchValue">
                 </div>
             </li>
-            <li v-for="(validator,index) in validators" :key="index">
+            <li v-for="(validator,index) in validatorFiltered" :key="index">
                 <div class="item-stake"
                         @click="chooseValidator(validator.operatorAddress,validator.description.moniker, validator.imageUrl)">
                     <ValidatorImage :imageUrl="validator.imageUrl"/>
@@ -39,6 +39,15 @@ export default {
     components: {
         ValidatorImage
     },
+    computed: {
+        validatorFiltered() {
+            if(!this.searchValue) {
+                return this.validators
+            }
+            const filter = this.searchValue.toUpperCase();
+            return this.validators.filter(x => x.description.moniker.toUpperCase().indexOf(filter) > -1)
+        }
+    },
     methods: {
         clickDropdown() {
             if (this.dropdown === true) {
@@ -57,8 +66,11 @@ export default {
             this.$emit('chooseValidator', address)
         },
         resetData() {
+            console.log("jkghdkjfghj")
             this.style = 'none'
             this.dropdown = false
+            this.title = 'Select validator'
+            this.imageUrl = ''
         }
     }
 }
