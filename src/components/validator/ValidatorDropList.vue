@@ -63,10 +63,10 @@ export default {
             this.style = 'none'
             this.title = title
             this.imageUrl = imageUrl
+            this.searchValue = ''
             this.$emit('chooseValidator', address)
         },
         resetData() {
-            console.log("jkghdkjfghj")
             this.style = 'none'
             this.dropdown = false
             this.title = 'Select validator'
