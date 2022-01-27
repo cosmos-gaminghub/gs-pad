@@ -4,21 +4,7 @@
             <div class="title-popup-stake">Delegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown"><a :class="{'js-link active':dropdown,'js-link':!dropdown}"
-                                             href="#" @click="clickDropdown()">
-                        <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
-                        {{ titleOption }}<i
-                        class="fa fa-angle-down"></i></a>
-                        <ul class="js-dropdown-list" :style="{display: style}">
-                            <li v-for="(validator,index) in validators" :key="index">
-                                <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, validator.imageUrl)">
-                                    <ValidatorImage :imageUrl="validator.imageUrl" ref="resetValidator"/>
-                                    <div class="name">{{ validator.description.moniker }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <ValidatorDropList :validators="validators" @chooseValidator="setAddress" ref="validatorDropList"/>
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="number" :style="formInvalid" placeholder="Enter tokens to Stake"
@@ -38,25 +24,22 @@
     </div>
 </template>
 <script>
-import ValidatorImage from "./validator/ValidatorImage";
+import ValidatorDropList from "./validator/ValidatorDropList";
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalDelegate",
-    components: {ValidatorImage},
+    components: {
+        ValidatorDropList
+    },
     data: function () {
         return {
-            dropdown: false,
-            style: 'none',
             addressDelegator: '',
             token: '',
-            title: 'Select validator',
             error: '',
             formInvalid: {
                 borderColor: ''
             },
-            imageUrl: '',
-            titleOption: ''
         }
     },
     props: {
@@ -72,33 +55,9 @@ export default {
             return false
         }
     },
-    watch: {
-        "titleDelegate": function (value) {
-            this.titleOption = value
-            this.validators.forEach(item => {
-                if(item.description.moniker == value) {
-                    this.addressDelegator = item.operatorAddress
-                    this.imageUrl = item.imageUrl
-                }
-            })
-        }
-    },
     methods: {
-        clickDropdown() {
-            if (this.dropdown === true) {
-                this.style = 'none'
-                this.dropdown = false
-            } else {
-                this.style = 'block'
-                this.dropdown = true
-            }
-        },
-        chooseValidator(address, title, imageUrl) {
+        setAddress(address) {
             this.addressDelegator = address
-            this.dropdown = false
-            this.style = 'none'
-            this.titleOption = title
-            this.imageUrl = imageUrl
         },
         async sendRequest() {
             const loader = this.showLoadling("delegateModalBody")
@@ -130,8 +89,7 @@ export default {
             this.token = ''
             this.error = ''
             this.formInvalid.borderColor = ''
-            this.dropdown = false
-            this.style = 'none'
+            this.$refs.validatorDropList.resetData()
         },
         showLoadling(refName) {
             const loader = this.$loading.show({
