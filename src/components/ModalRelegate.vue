@@ -4,40 +4,10 @@
             <div class="title-popup-stake">Redelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown">
-                        <a :class="{'js-link active':srcRef.dropdown,'js-link':!srcRef.dropdown}" href="#" @click="clickDropdown('srcRef')">
-                            <ValidatorImage :imageUrl="srcImageUrl" v-if="srcImageUrl"/>
-                            {{ titleStakedValidator }}
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="js-dropdown-list" ref="srcRef" :style="{display: srcRef.style}">
-                            <li v-for="(stakedValidator,index) in stakedValidators" :key="index">
-                                <div class="item-stake"
-                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker, 'srcRef', stakedValidator.imageUrl)">
-                                     <ValidatorImage :imageUrl="stakedValidator.imageUrl"/>
-                                    <div class="name">{{ stakedValidator.description.moniker }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <ValidatorDropList :validators="validators" @chooseValidator="setSrcAddress" ref="srcValidatorDropList"/>
                 </div>
                 <div class="form-group">
-                    <div class="dropdown">
-                        <a :class="{'js-link active':dstRef.dropdown,'js-link':!dstRef.dropdown}" href="#" @click="clickDropdown('dstRef')">
-                            <ValidatorImage :imageUrl="dstImageUrl" v-if="dstImageUrl"/>
-                            {{ titleValidator }}
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="js-dropdown-lists" :style="{display: dstRef.style}">
-                            <li v-for="(validator,index) in validators" :key="index">
-                                <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, 'dstRef', validator.imageUrl)">
-                                    <ValidatorImage :imageUrl="validator.imageUrl"/>
-                                    <div class="name">{{ validator.description.moniker }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <ValidatorDropList :validators="validators" @chooseValidator="setDstAddress" ref="dstValidatorDropList"/>
                 </div>
                 <div class="form-group">
                     <input class="form-control" :style="formInvalid" type="number" v-model="token"
@@ -60,33 +30,20 @@
 
 <script>
 import {KelprWallet} from "../utils/connectKeplr";
-import ValidatorImage from "./validator/ValidatorImage";
+import ValidatorDropList from "./validator/ValidatorDropList";
 
 export default {
     name: "ModalRelegate",
-    components: {ValidatorImage},
+    components: {
+        ValidatorDropList
+    },
     data: function () {
         return {
-            dropdown: false,
-            dropdown2: false,
-            style: 'none',
-            style2: 'none',
             tokenStaked: 0,
             token: '',
             dstValidatorAddress: '',
             srcValidatorAddress: '',
-            dstImageUrl: '',
-            srcImageUrl: '',
-            titleStakedValidator: 'Select validator from',
-            titleValidator: 'Select validator to',
-            dstRef: {
-                style: 'none',
-                dropdown: false
-            },
-            srcRef: {
-                style: 'none',
-                dropdown: false
-            }, error: '',
+            error: '',
             formInvalid: {
                 borderColor: ''
             }
@@ -99,7 +56,6 @@ export default {
     },
     computed: {
         clickSubmit() {
-
             if (this.error || this.title == 'Select validator' || this.token == '') {
                 return true
             }
@@ -107,43 +63,22 @@ export default {
         }
     },
     methods: {
-        clickDropdown(ref) {
-            if (this[ref].dropdown === true) {
-                this.hideDropDown(ref)
-            } else {
-                this.showDropDown(ref)
-            }
+        setDstAddress(address) {
+            this.dstValidatorAddress = address
         },
-        chooseStaked(address, title, ref, imageUrl) {
-            this.titleStakedValidator = title
+        setSrcAddress(address) {
             this.srcValidatorAddress = address
-            this.srcImageUrl = imageUrl
             this.delegate.forEach(item => {
                 if (item.delegation.validatorAddress === address) {
                     this.tokenStaked = Number(item.balance.amount) / 10 ** 6
                 }
             })
-            this.hideDropDown(ref)
         },
         maxToken() {
             this.token = this.tokenStaked
         },
-        chooseValidator(address, title, ref, imageUrl) {
-            this.titleValidator = title
-            this.dstValidatorAddress = address
-            this.dstImageUrl = imageUrl
-            this.hideDropDown(ref)
-        },
-        hideDropDown(ref) {
-            this[ref].dropdown = false
-            this[ref].style = 'none'
-        },
-        showDropDown(ref) {
-            this[ref].style = 'block'
-            this[ref].dropdown = true
-        },
         async sendData() {
-            const loader = this.showLoadling("stakeModalBody")
+            const loader = this.showLoading("stakeModalBody")
             try {
                 const keplrWallet = await KelprWallet.getKeplrWallet()
                 const delegatorAddress = await KelprWallet.getAddress()
@@ -167,14 +102,12 @@ export default {
         },
         closeModal() {
             this.token = ''
-            this.titleStakedValidator = 'Select validator from'
-            this.titleValidator = 'Select validator to'
             this.error = ''
             this.formInvalid.borderColor = ''
-            this.hideDropDown('srcRef')
-            this.hideDropDown('dstRef')
+            this.$refs.srcValidatorDropList.resetData()
+            this.$refs.dstValidatorDropList.resetData()
         },
-        showLoadling(refName) {
+        showLoading(refName) {
             const loader = this.$loading.show({
                 container: this.$refs[refName],
                 canCancel: true,

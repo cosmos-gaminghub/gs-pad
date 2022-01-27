@@ -4,22 +4,7 @@
             <div class="title-popup-stake">Stake Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown">
-                        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
-                            <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
-                            {{ title }}
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="js-dropdown-list" :style="{display: style}">
-                            <li v-for="(validator,index) in validators" :key="index">
-                                <div class="item-stake"
-                                     @click="chooseValidator(validator.operatorAddress,validator.description.moniker, validator.imageUrl)">
-                                    <ValidatorImage :imageUrl="validator.imageUrl"/>
-                                    <div class="name">{{ validator.description.moniker }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <ValidatorDropList :validators="validators" @chooseValidator="chooseValidator" ref="validatorDropList"/>
                 </div>
                 <div class="form-group">
                     <div class="input-number">
@@ -47,24 +32,22 @@
 </template>
 
 <script>
-import ValidatorImage from "./validator/ValidatorImage";
+import ValidatorDropList from "./validator/ValidatorDropList";
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalStake",
-    components: {ValidatorImage},
+    components: {
+        ValidatorDropList
+    },
     data: function () {
         return {
-            dropdown: false,
-            style: 'none',
             addressDelegator: '',
             error: '',
             formInvalid: {
                 borderColor: ''
             },
             token: '',
-            title: 'Select validator',
-            imageUrl: ''
         }
     },
     props: {
@@ -78,24 +61,11 @@ export default {
                 return true
             }
             return false
-        }
+        },
     },
     methods: {
-        clickDropdown() {
-            if (this.dropdown === true) {
-                this.style = 'none'
-                this.dropdown = false
-            } else {
-                this.style = 'block'
-                this.dropdown = true
-            }
-        },
-        chooseValidator(address, title, imageUrl) {
+        chooseValidator(address) {
             this.addressDelegator = address
-            this.dropdown = false
-            this.style = 'none'
-            this.title = title
-            this.imageUrl = imageUrl
         },
         async sendRequest() {
             const loader = this.showLoadling("stakeButton")
@@ -104,6 +74,8 @@ export default {
                 const delegatorAddress = await KelprWallet.getAddress()
                 await keplrWallet.delegateTokens(delegatorAddress, this.addressDelegator, this.token)
                 this.$toast.success("Stake success");
+                this.$parent.closeModal('modalStake','closeStake')
+                await this.$parent.getData();
             } catch (err) {
                 this.$toast.error(err.message);
             }
@@ -123,11 +95,9 @@ export default {
         },
         closeModal() {
             this.token = ''
-            this.title = 'Select validator'
             this.error = ''
             this.formInvalid.borderColor = ''
-            this.dropdown = false
-            this.style = 'none'
+            this.$refs.validatorDropList.resetData()
         },
         showLoadling(refName) {
             const loader = this.$loading.show({

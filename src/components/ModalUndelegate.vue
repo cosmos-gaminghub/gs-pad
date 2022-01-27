@@ -4,22 +4,7 @@
             <div class="title-popup-stake">Undelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <div class="dropdown">
-                        <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="#" @click="clickDropdown()">
-                            <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
-                            {{ title }}
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="js-dropdown-list" :style="{display: style}">
-                            <li v-for="(stakedValidator,index) in stakedValidators" :key="index">
-                                <div class="item-stake"
-                                     @click="chooseStaked(stakedValidator.operatorAddress,stakedValidator.description.moniker,stakedValidator.imageUrl)">
-                                    <ValidatorImage :imageUrl="stakedValidator.imageUrl" />
-                                    <div class="name">{{ stakedValidator.description.moniker }}</div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <ValidatorDropList :validators="stakedValidators" @chooseValidator="setAddress" ref="validatorDropList"/>
                 </div>
                 <div class="form-group">
                     <input class="form-control" :style="formInvalid" type="number" v-model="token"
@@ -41,12 +26,14 @@
 </template>
 
 <script>
-import ValidatorImage from "./validator/ValidatorImage";
+import ValidatorDropList from "./validator/ValidatorDropList";
 import {KelprWallet} from "@/utils/connectKeplr";
 
 export default {
     name: "ModalUndelegate",
-    components: {ValidatorImage},
+    components: {
+        ValidatorDropList
+    },
     data: function () {
         return {
             dropdown: false,
@@ -75,29 +62,16 @@ export default {
         }
     },
     methods: {
-        clickDropdown() {
-            if (this.dropdown === true) {
-                this.style = 'none'
-                this.dropdown = false
-            } else {
-                this.style = 'block'
-                this.dropdown = true
-            }
-        },
-        maxToken() {
-            this.token = this.tokenStaked
-        },
-        chooseStaked(address, title,imageUrl) {
-            this.title = title
+        setAddress(address) {
             this.addressDelegator = address
             this.delegate.forEach(item => {
                 if (item.delegation.validatorAddress === address) {
                     this.tokenStaked = Number(item.balance.amount) / 10 ** 6
                 }
             })
-            this.dropdown = false
-            this.style = 'none'
-            this.imageUrl = imageUrl
+        },
+        maxToken() {
+            this.token = this.tokenStaked
         },
         async sendRequest() {
             const loader = this.showLoadling("undelegateModalBody")
@@ -124,11 +98,9 @@ export default {
         },
         closeModal() {
             this.token = ''
-            this.title = 'Select validator'
             this.error = ''
             this.formInvalid.borderColor = ''
-            this.dropdown = false
-            this.style = 'none'
+            this.$refs.validatorDropList.resetData()
         },
         showLoadling(refName) {
             const loader = this.$loading.show({

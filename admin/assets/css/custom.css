@@ -35,3 +35,10 @@
     max-height: 300px;
     overflow-y: auto;
 }
+#popupStakeTokens .content-stake .dropdown li .item-stake input, #popupUndelegate .content-stake .dropdown li .item-stake input, #popupRedelega .content-stake .dropdown li .item-stake input{
+    width: 100%;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+}
