@@ -455,13 +455,15 @@ export default {
         async getProposals() {
             const loader = this.showLoadling("proposalTable")
             try {
+                let proposals = []
                 const res = await this.wallet.getListProposal(ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD, '', '')
                 for(const index in res.proposals) {
                     const proposal = res.proposals[index]
                     const {tally} = await this.wallet.getProposalTally(proposal.proposalId)
                     proposal.finalTallyResult = {...tally}
-                    this.proposals = this.proposals.concat(proposal)
+                    proposals = proposals.concat(proposal)
                 }
+                this.proposals = [...proposals]
                 this.sortProposal()
                 await this.formatProposals()
             } catch (err) {
