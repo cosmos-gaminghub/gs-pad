@@ -1,7 +1,7 @@
 <template>
     <div class="dropdown">
         <a :class="{'js-link active':dropdown,'js-link':!dropdown}" href="javascript:void(0)" @click="clickDropdown()">
-            <ValidatorImage :imageUrl="imageUrl" v-if="imageUrl"/>
+            <ValidatorImage :imageUrl="imageUrl"/>
             {{ title }}
             <i class="fa fa-angle-down"></i>
         </a>
