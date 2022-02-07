@@ -530,9 +530,7 @@ export default {
             try {
                 const kelprWallet = await KelprWallet.getKeplrWallet()
                 const address = await KelprWallet.getAddress()
-                for await (const data of this.listReward) {
-                    await kelprWallet.claimRewards(address, data.validatorAddress)
-                }
+                await kelprWallet.claimRewards(address, this.listReward)
                 this.$toast.success("Claim success")
                 await this.getRewards()
             } catch (err) {
