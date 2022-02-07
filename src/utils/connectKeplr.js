@@ -63,7 +63,7 @@ export class KelprWallet {
                     await window.keplr.enable(chainId);
 
                     // @ts-ignore
-                    const keplrOfflineSigner = window.getOfflineSigner(chainId);
+                    const keplrOfflineSigner = await window.getOfflineSignerAuto(chainId);
                     const accounts = await keplrOfflineSigner.getAccounts();
 
                     const address = accounts[0].address;
@@ -78,7 +78,7 @@ export class KelprWallet {
     }
 
     static async getKeplrWallet() {
-        const keplrOfflineSigner = window.getOfflineSigner(chainId);
+        const keplrOfflineSigner = await window.getOfflineSignerAuto(chainId);
         const client = await SigningStargateClient.connectWithSigner(
             process.env.VUE_APP_END_POINT,
             keplrOfflineSigner,
