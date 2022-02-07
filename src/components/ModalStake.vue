@@ -57,7 +57,7 @@ export default {
     },
     computed: {
         clickSubmit() {
-            if (this.error || this.title === 'Select validator' || this.token === '') {
+            if (this.error || this.addressDelegator === '' || this.token === '') {
                 return true
             }
             return false
