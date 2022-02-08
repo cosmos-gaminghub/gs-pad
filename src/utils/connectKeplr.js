@@ -161,10 +161,22 @@ export class KelprWallet {
         assertIsBroadcastTxSuccess(result);
     }
 
-    async claimRewards (delegatorAddress, validatorAddress) {
-        const fee = this.getFee()
+    async claimRewards (delegatorAddress, listReward) {
+        const fee = this.getFee(listReward.length)
         const memo = "Claim Reward";
-        const result =  await this.getClient().withdrawRewards(delegatorAddress, validatorAddress, fee, memo)
+        const listMsg = []
+        for (const data of listReward) {
+            const withdrawMsg = {
+                typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+                value: {
+                    delegatorAddress: delegatorAddress,
+                    validatorAddress: data.validatorAddress,
+                },
+            };
+            listMsg.push(withdrawMsg)
+        }
+        console.log(listMsg)
+        const result =  await this.getClient().signAndBroadcast(delegatorAddress, listMsg, fee, memo)
         assertIsBroadcastTxSuccess(result);
     }
 }

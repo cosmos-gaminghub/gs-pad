@@ -16,9 +16,7 @@
                 :key="index">
                 <td>
                     <div class="td-acount">
-                        <div class="icon">
-                            <img :src="validator.imageUrl" style="max-width: 100%;height: auto">
-                        </div>
+                        <ValidatorImage :imageUrl="validator.imageUrl"/>
                         <a :href="validator | getValidatorLink" target="_blank">{{ validator | getMoniker }}</a>
                     </div>
                 </td>
@@ -36,10 +34,12 @@
 </template>
 <script>
 import ValidatorNoData from "@/components/validator/ValidatorNoData.vue"
+import ValidatorImage from "@/components/validator/ValidatorImage";
 const DENOM = process.env.VUE_APP_COIN_MINIMAL_DENOM
 export default {
     components: {
         ValidatorNoData,
+        ValidatorImage
     },
     props: {
         validators: Array,

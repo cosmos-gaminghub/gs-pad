@@ -4,7 +4,7 @@
             <div class="title-popup-stake">Redelegate Tokens</div>
             <div class="form-token">
                 <div class="form-group">
-                    <ValidatorDropList :validators="validators" @chooseValidator="setSrcAddress" ref="srcValidatorDropList"/>
+                    <ValidatorDropList :validators="stakedValidators" @chooseValidator="setSrcAddress" ref="srcValidatorDropList"/>
                 </div>
                 <div class="form-group">
                     <ValidatorDropList :validators="validators" @chooseValidator="setDstAddress" ref="dstValidatorDropList"/>
@@ -56,7 +56,7 @@ export default {
     },
     computed: {
         clickSubmit() {
-            if (this.error || this.title == 'Select validator' || this.token == '') {
+            if (this.error || this.token == '') {
                 return true
             }
             return false
