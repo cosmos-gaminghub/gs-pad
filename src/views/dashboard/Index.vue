@@ -433,24 +433,21 @@ export default {
                 if (validators[index + i]) {
                     const value = validators[index + i];
                     if (value && value.description && value.description.identity) {
-                        array.push(this.getKeyBaseImage(value.description.identity));
+                        array.push(this.getKeyBaseImage(value.description.identity, property, index + i));
                     }
                 } else {
                     break;
                 }
             }
-            Promise.all(array).then((data) => {
-                data.forEach((item, i) => {
-                    this.$set(this[property][index + i], 'imageUrl', item)
-                })
+            Promise.all(array).then(() => {
                 if (index + 3 <= validators.length - 1) {
                     this.getValidatorImage(index + 3, validators, property);
                 }
             });
         },
-        async getKeyBaseImage (identity) {
+        async getKeyBaseImage (identity, property, index) {
             const response = await this.axios.get(`https://keybase.io/_/api/1.0/user/lookup.json?key_suffix=${identity}&fields=pictures`)
-            return response.data.them[0].pictures.primary.url
+            this.$set(this[property][index], 'imageUrl', response.data.them[0].pictures.primary.url)
         },
         async getProposals() {
             const loader = this.showLoadling("proposalTable")
