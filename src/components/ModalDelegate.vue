@@ -55,6 +55,17 @@ export default {
             return false
         }
     },
+    watch: {
+        titleDelegate(value) {
+            this.$refs.validatorDropList.title = value
+            this.validators.forEach(item => {
+                if (item.description.moniker === value) {
+                    this.addressDelegator = item.operatorAddress
+                    this.$refs.validatorDropList.imageUrl = item.imageUrl
+                }
+            })
+        }
+    },
     methods: {
         setAddress(address) {
             this.addressDelegator = address
