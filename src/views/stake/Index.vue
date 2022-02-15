@@ -140,7 +140,7 @@ export default {
             try {
                 await this.wallet.getValidators("BOND_STATUS_BONDED", paginationKey).then(res => {
                     this.allValidators = this.allValidators.concat(res.validators)
-                    if(res.validators.length == 100) {
+                    if(res.validators.length == 100 && res.pagination.nextKey.length > 0) {
                         this.getAllValidators(res.pagination.nextKey, false)
                     } else {
                         this.isLoadingValidator = false
