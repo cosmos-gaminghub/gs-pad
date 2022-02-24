@@ -11,7 +11,7 @@ export class KelprWallet {
         this.client = client
     }
 
-    static async connectWallet() {
+    static async connectWallet(__callback) {
         if (!window.getOfflineSigner || !window.keplr) {
             throw new Error("Please install keplr extension")
         } else {
@@ -68,6 +68,7 @@ export class KelprWallet {
 
                     const address = accounts[0].address;
                     KelprWallet.setAddress(address);
+                    __callback(address)
                 } catch (error) {
                     throw new Error(error.message)
                 }
