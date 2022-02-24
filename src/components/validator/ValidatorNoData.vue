@@ -28,18 +28,15 @@ export default {
         ...mapMutations("auth", [
             'setAddress'
         ]),
-        async connectWallet() {
+        connectWallet() {
             try {
-                await KelprWallet.connectWallet()
-                const address = this.getAddress()
-                this.setAddress(address)
+                KelprWallet.connectWallet((address) => {
+                    this.setAddress(address)
+                })
             } catch (err) {
                 this.$toast.error(err.message)
             }
         },
-        getAddress() {
-            return localStorage.getItem("address")
-        }, 
     }
 }
 </script>
