@@ -41,7 +41,7 @@
                                                             :vote="proposal.finalTallyResult"
                                                             :title="proposal.content.value"
                                                             :proposalId="proposal.proposalId.low"
-                                                            @showModal="showModal(proposal.proposalId.low,index+1)"/>
+                                                            @showModal="showModal(proposal.proposalId.low)"/>
                                                     </li>
                                                     <ProposalNoData :proposals="proposals"/>
                                                 </ul>
@@ -63,7 +63,7 @@
                                                             :vote="proposal.finalTallyResult"
                                                             :title="proposal.content.value"
                                                             :proposalId="proposal.proposalId.low"
-                                                            @showModal="showModal(proposal.proposalId.low,index+1)"/>
+                                                            @showModal="showModal(proposal.proposalId.low)"/>
                                                     </li>
                                                     <ProposalNoData :proposals="proposalsForStatus"/>
                                                 </ul>
@@ -85,7 +85,7 @@
                                                             :vote="proposal.finalTallyResult"
                                                             :title="proposal.content.value"
                                                             :proposalId="proposal.proposalId.low"
-                                                            @showModal="showModal(proposal.proposalId.low,index+1)"/>
+                                                            @showModal="showModal(proposal.proposalId.low)"/>
                                                     </li>
                                                     <ProposalNoData :proposals="proposalsForStatus"/>
                                                 </ul>
@@ -107,7 +107,7 @@
                                                             :vote="proposal.finalTallyResult"
                                                             :title="proposal.content.value"
                                                             :proposalId="proposal.proposalId.low"
-                                                            @showModal="showModal(proposal.proposalId.low,index+1)"/>
+                                                            @showModal="showModal(proposal.proposalId.low)"/>
                                                     </li>
                                                     <ProposalNoData :proposals="proposalsForStatus"/>
                                                 </ul>
@@ -316,14 +316,14 @@ export default {
             }
             this.proposals = [...proposals]
         },
-        showModal(val, index) {
+        showModal(proposalId) {
             this.$refs.modal.classList.toggle("in")
             document.body.classList.toggle("modal-open");
             this.$refs.modal.style.display = "block"
             this.setIsOpen(true)
-            this.i = index // remove i
+            this.i = proposalId // remove i
             this.proposals.forEach(item => {
-                if (item.proposalId.low === val) {
+                if (item.proposalId.low === proposalId) {
                     this.proposalDetail = item
                     if (item.status === ProposalStatus.PROPOSAL_STATUS_VOTING_PERIOD) {
                         this.check = true
