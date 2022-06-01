@@ -48,6 +48,7 @@ export default {
                 borderColor: ''
             },
             token: '',
+            defaultFee: 0.02,
         }
     },
     props: {
@@ -82,7 +83,7 @@ export default {
             loader.hide()
         },
         maxAvailable() {
-            this.token = Number(this.coin) / 10 ** 6
+            this.token = Number(this.coin) / 10 ** 6 - this.defaultFee
         },
         checkRequest() {
             if (Number(this.token) > Number(this.coin)) {

@@ -40,6 +40,7 @@ export default {
             formInvalid: {
                 borderColor: ''
             },
+            defaultFee: 0.02,
         }
     },
     props: {
@@ -85,7 +86,7 @@ export default {
             this.hideLoading(loader)
         },
         maxAvailable() {
-            this.token = Number(this.coin) / 10 ** 6
+            this.token = Number(this.coin) / 10 ** 6 - this.defaultFee
         },
         checkRequest() {
             if (Number(this.token) > Number(this.coin)) {
